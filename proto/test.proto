@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package jk_test;
+
+enum ValueType {
+  UNKNOWN = 0;
+  TYPE_A = 1;
+  TYPE_B = 2;
+}
+
+message FooA {
+  string id = 1;
+  optional string name = 2;
+  optional int32 value = 3;
+  optional ValueType type = 4;
+}
+
+message FooB {
+  string id = 1;
+}
+
+
+message FooC {
+  string id_b = 1;
+  optional string name_b = 2;
+  optional int32 value_b = 3;
+  optional ValueType type = 4;
+  enum ValueTypeExtra {
+    UNKNOWN = 0;
+    TYPE_C = 1;
+    TYPE_D = 2;
+  }
+  ValueTypeExtra extra = 5;
+  repeated FooA others = 6;
+  oneof ThisOrThatChoice {
+    FooA fooA = 101;
+    FooB fooB = 102;
+  }
+  oneof AorBChoice {
+    string fooC = 201;
+    int32 fooD = 202;
+  }
+  int32 last = 7;
+}
+
+message FooFromCoPilot {
+    oneof choice {
+        Bar bar = 1;
+        Baz baz = 2;
+    }
+
+    message Bar {
+        int32 foo = 1;
+    }
+
+    message Baz {
+        string foo = 2;
+    }
+}

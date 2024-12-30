@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package fileupload;
+
+service FileService {
+    rpc UploadFile(stream FileChunk) returns (UploadStatus);
+}
+
+message FileChunk {
+    bytes content = 1;
+    int32 chunk_size = 2;
+}
+
+message UploadStatus {
+    bool success = 1;
+    string message = 2;
+}
