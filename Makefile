@@ -12,11 +12,13 @@ build-run-dev: build-dev-image ## Build and run dev image
 PHONY: api
 api: ## build proto api
 	mkdir -p ./proto_out
-	protoc \
-		--proto_path=./proto \
-		--python_out=./proto_out \
-		test.proto \
-		fileservice.proto
+
+	python3 -m grpc_tools.protoc -I. \
+	--proto_path=./proto \
+	--python_out=./proto_out \
+	--grpc_python_out=./proto_out \
+		fileservice.proto \
+		test.proto
 
 PHONY: install
 install: ## install dependencies

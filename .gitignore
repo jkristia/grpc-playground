@@ -1,8 +1,8 @@
 .npm
-.venv
+**/.venv
 .home
 .bash_history
 .lesshst
 .home/go
 .home/.cache
-proto/json_out
+**/__pycache__
