@@ -18,7 +18,8 @@ api: ## build proto api
 	--python_out=./proto_out \
 	--grpc_python_out=./proto_out \
 		fileservice.proto \
-		test.proto
+		test.proto \
+		foo.proto
 
 PHONY: install
 install: ## install dependencies
