@@ -87,25 +87,70 @@ class FooB(google.protobuf.message.Message):
 global___FooB = FooB
 
 @typing.final
+class SubItemA(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    NAME_FIELD_NUMBER: builtins.int
+    VALUE_FIELD_NUMBER: builtins.int
+    name: builtins.str
+    value: builtins.str
+    def __init__(
+        self,
+        *,
+        name: builtins.str = ...,
+        value: builtins.str = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["name", b"name", "value", b"value"]) -> None: ...
+
+global___SubItemA = SubItemA
+
+@typing.final
+class SubItemB(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    KEY_FIELD_NUMBER: builtins.int
+    CAMELCASEPROPNAME_FIELD_NUMBER: builtins.int
+    key: builtins.str
+    camelCasePropName: builtins.str
+    def __init__(
+        self,
+        *,
+        key: builtins.str = ...,
+        camelCasePropName: builtins.str = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["camelCasePropName", b"camelCasePropName", "key", b"key"]) -> None: ...
+
+global___SubItemB = SubItemB
+
+@typing.final
 class Config(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     ID_FIELD_NUMBER: builtins.int
     FOOA_FIELD_NUMBER: builtins.int
     FOOB_FIELD_NUMBER: builtins.int
+    A_FIELD_NUMBER: builtins.int
+    B_FIELD_NUMBER: builtins.int
     id: builtins.str
     @property
     def fooA(self) -> global___FooA: ...
     @property
     def fooB(self) -> global___FooB: ...
+    @property
+    def a(self) -> global___SubItemA: ...
+    @property
+    def b(self) -> global___SubItemB: ...
     def __init__(
         self,
         *,
         id: builtins.str = ...,
         fooA: global___FooA | None = ...,
         fooB: global___FooB | None = ...,
+        a: global___SubItemA | None = ...,
+        b: global___SubItemB | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing.Literal["fooA", b"fooA", "fooB", b"fooB"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing.Literal["fooA", b"fooA", "fooB", b"fooB", "id", b"id"]) -> None: ...
+    def HasField(self, field_name: typing.Literal["a", b"a", "b", b"b", "fooA", b"fooA", "fooB", b"fooB", "subitem", b"subitem"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["a", b"a", "b", b"b", "fooA", b"fooA", "fooB", b"fooB", "id", b"id", "subitem", b"subitem"]) -> None: ...
+    def WhichOneof(self, oneof_group: typing.Literal["subitem", b"subitem"]) -> typing.Literal["a", "b"] | None: ...
 
 global___Config = Config

@@ -21,8 +21,22 @@ message FooB {
     bool enabled = 2;
 }
 
+message SubItemA {
+    string name = 1;
+    string value = 2;
+}
+
+message SubItemB {
+    string key = 1;
+    string camelCasePropName = 2;
+}
+
 message Config {
     string id = 1;
     FooA fooA = 2;
     FooB fooB = 3;
+    oneof subitem {
+        SubItemA a = 100;
+        SubItemB b = 101;
+    }
 }

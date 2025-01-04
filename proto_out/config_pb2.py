@@ -24,19 +24,23 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x63onfig.proto\x12\x06\x63onfig\"\xae\x01\n\x04\x46ooA\x12\n\n\x02id\x18\x01 \x01(\t\x12\x11\n\x04name\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x12\n\x05value\x18\x03 \x01(\x05H\x01\x88\x01\x01\x12-\n\roptional_type\x18\x04 \x01(\x0e\x32\x11.config.ValueTypeH\x02\x88\x01\x01\x12\x1f\n\x04type\x18\x05 \x01(\x0e\x32\x11.config.ValueTypeB\x07\n\x05_nameB\x08\n\x06_valueB\x10\n\x0e_optional_type\"#\n\x04\x46ooB\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0f\n\x07\x65nabled\x18\x02 \x01(\x08\"L\n\x06\x43onfig\x12\n\n\x02id\x18\x01 \x01(\t\x12\x1a\n\x04\x66ooA\x18\x02 \x01(\x0b\x32\x0c.config.FooA\x12\x1a\n\x04\x66ooB\x18\x03 \x01(\x0b\x32\x0c.config.FooB*0\n\tValueType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06TYPE_A\x10\x01\x12\n\n\x06TYPE_B\x10\x02\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x63onfig.proto\x12\x06\x63onfig\"\xae\x01\n\x04\x46ooA\x12\n\n\x02id\x18\x01 \x01(\t\x12\x11\n\x04name\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x12\n\x05value\x18\x03 \x01(\x05H\x01\x88\x01\x01\x12-\n\roptional_type\x18\x04 \x01(\x0e\x32\x11.config.ValueTypeH\x02\x88\x01\x01\x12\x1f\n\x04type\x18\x05 \x01(\x0e\x32\x11.config.ValueTypeB\x07\n\x05_nameB\x08\n\x06_valueB\x10\n\x0e_optional_type\"#\n\x04\x46ooB\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0f\n\x07\x65nabled\x18\x02 \x01(\x08\"\'\n\x08SubItemA\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"2\n\x08SubItemB\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x19\n\x11\x63\x61melCasePropName\x18\x02 \x01(\t\"\x95\x01\n\x06\x43onfig\x12\n\n\x02id\x18\x01 \x01(\t\x12\x1a\n\x04\x66ooA\x18\x02 \x01(\x0b\x32\x0c.config.FooA\x12\x1a\n\x04\x66ooB\x18\x03 \x01(\x0b\x32\x0c.config.FooB\x12\x1d\n\x01\x61\x18\x64 \x01(\x0b\x32\x10.config.SubItemAH\x00\x12\x1d\n\x01\x62\x18\x65 \x01(\x0b\x32\x10.config.SubItemBH\x00\x42\t\n\x07subitem*0\n\tValueType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06TYPE_A\x10\x01\x12\n\n\x06TYPE_B\x10\x02\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'config_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_VALUETYPE']._serialized_start=316
-  _globals['_VALUETYPE']._serialized_end=364
+  _globals['_VALUETYPE']._serialized_start=483
+  _globals['_VALUETYPE']._serialized_end=531
   _globals['_FOOA']._serialized_start=25
   _globals['_FOOA']._serialized_end=199
   _globals['_FOOB']._serialized_start=201
   _globals['_FOOB']._serialized_end=236
-  _globals['_CONFIG']._serialized_start=238
-  _globals['_CONFIG']._serialized_end=314
+  _globals['_SUBITEMA']._serialized_start=238
+  _globals['_SUBITEMA']._serialized_end=277
+  _globals['_SUBITEMB']._serialized_start=279
+  _globals['_SUBITEMB']._serialized_end=329
+  _globals['_CONFIG']._serialized_start=332
+  _globals['_CONFIG']._serialized_end=481
 # @@protoc_insertion_point(module_scope)
