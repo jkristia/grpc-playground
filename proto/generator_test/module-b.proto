@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package module_b;
+
+
+
+message BasicMessageB {
+    string name = 1;
+}

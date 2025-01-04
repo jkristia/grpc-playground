@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package module_a;
+
+enum BasicEnum {
+    UNKNOWN = 0;
+    VALUE_1 = 1;
+    ABC = 2;
+}
+
+message BasicSubItem {
+    string name = 1;
+}
+message BasicMessageA {
+    string name = 1;
+    int32 int_value = 2;
+    float float_value = 3;
+    bool bool_value = 4;
+    BasicEnum enum_value = 5;
+    repeated int32 repeated_field = 6;
+    BasicSubItem sub_item = 7;
+
+    optional string o_name = 51;
+    optional int32 o_int_value = 52;
+    optional float o_float_value = 53;
+    optional bool o_bool_value = 54;
+    optional BasicEnum o_enum_value = 55;
+}

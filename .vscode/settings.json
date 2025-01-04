@@ -1,5 +1,17 @@
 {
     "python.envFile": "${workspaceFolder}/.env",
     "python.analysis.typeCheckingMode": "standard",
-	"python.analysis.enablePytestSupport": true,
+    "python.analysis.enablePytestSupport": true,
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./generator",
+        "-p",
+        "test_*.py"
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+        "."
+    ],
 }

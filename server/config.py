@@ -3,6 +3,8 @@ from dataclasses import dataclass, asdict
 from enum import Enum
 import json
 
+from descriptors import ModelGeneratorDoc
+
 class ValueType(Enum):
     UNKNOWN = 'UNKNOWN'
     TYPE_A = 'TYPE_A'
@@ -153,6 +155,11 @@ def dump_class(message_descriptor: Descriptor):
 def config_testing():
     # Get the module descriptor
     module_descriptor = config_pb2.DESCRIPTOR
+    
+    doc = ModelGeneratorDoc([
+        config_pb2.DESCRIPTOR,
+    ])
+    
 
     # List all message types
     for message_type in module_descriptor.message_types_by_name:

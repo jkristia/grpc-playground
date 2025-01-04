@@ -22,6 +22,8 @@ api: ## build proto api
 		test.proto \
 		foo.proto \
 		config.proto \
+		generator_test/module-a.proto \
+		generator_test/module-b.proto \
 
 PHONY: install
 install: ## install dependencies
