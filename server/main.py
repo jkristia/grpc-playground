@@ -1,7 +1,9 @@
+from grpc_reflection.v1alpha import reflection
 import asyncio
 import signal
 
 import grpc
+import foo_pb2
 from foo_pb2 import FooRequest, FooResponse
 from foo_pb2_grpc import FooGrpcServicer, add_FooGrpcServicer_to_server
 
@@ -13,6 +15,11 @@ class FooServer(FooGrpcServicer):
 async def serve():
     server = grpc.aio.server()
     add_FooGrpcServicer_to_server(FooServer(), server)
+    SERVICE_NAMES = (
+        foo_pb2.DESCRIPTOR.services_by_name['FooGrpc'].full_name,
+        reflection.SERVICE_NAME,
+        )
+    reflection.enable_server_reflection(SERVICE_NAMES, server)
     port = 50051
     server.add_insecure_port(f'[::]:{port}')
     await server.start()
