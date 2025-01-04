@@ -16,10 +16,12 @@ api: ## build proto api
 	python3 -m grpc_tools.protoc -I. \
 	--proto_path=./proto \
 	--python_out=./proto_out \
+	--mypy_out=./proto_out \
 	--grpc_python_out=./proto_out \
 		fileservice.proto \
 		test.proto \
-		foo.proto
+		foo.proto \
+		config.proto \
 
 PHONY: install
 install: ## install dependencies

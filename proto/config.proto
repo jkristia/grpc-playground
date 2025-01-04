@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package config;
+
+enum ValueType {
+    UNKNOWN = 0;
+    TYPE_A = 1;
+    TYPE_B = 2;
+}
+
+message FooA {
+    string id = 1;
+    optional string name = 2;
+    optional int32 value = 3;
+    optional ValueType type = 4;
+}
+
+message FooB {
+    string id = 1;
+    bool enabled = 2;
+}
+
+message Config {
+    string id = 1;
+    FooA fooA = 2;
+    FooB fooB = 3;
+}
