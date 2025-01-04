@@ -1,3 +1,5 @@
 {
-    "python.envFile": "${workspaceFolder}/.env"
+    "python.envFile": "${workspaceFolder}/.env",
+    "python.analysis.typeCheckingMode": "standard",
+	"python.analysis.enablePytestSupport": true,
 }

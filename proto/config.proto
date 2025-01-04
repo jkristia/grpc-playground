@@ -12,7 +12,8 @@ message FooA {
     string id = 1;
     optional string name = 2;
     optional int32 value = 3;
-    optional ValueType type = 4;
+    optional ValueType optional_type = 4;
+    ValueType type = 5;
 }
 
 message FooB {

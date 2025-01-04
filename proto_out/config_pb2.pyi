@@ -41,10 +41,12 @@ class FooA(google.protobuf.message.Message):
     ID_FIELD_NUMBER: builtins.int
     NAME_FIELD_NUMBER: builtins.int
     VALUE_FIELD_NUMBER: builtins.int
+    OPTIONAL_TYPE_FIELD_NUMBER: builtins.int
     TYPE_FIELD_NUMBER: builtins.int
     id: builtins.str
     name: builtins.str
     value: builtins.int
+    optional_type: global___ValueType.ValueType
     type: global___ValueType.ValueType
     def __init__(
         self,
@@ -52,14 +54,15 @@ class FooA(google.protobuf.message.Message):
         id: builtins.str = ...,
         name: builtins.str | None = ...,
         value: builtins.int | None = ...,
-        type: global___ValueType.ValueType | None = ...,
+        optional_type: global___ValueType.ValueType | None = ...,
+        type: global___ValueType.ValueType = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing.Literal["_name", b"_name", "_type", b"_type", "_value", b"_value", "name", b"name", "type", b"type", "value", b"value"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing.Literal["_name", b"_name", "_type", b"_type", "_value", b"_value", "id", b"id", "name", b"name", "type", b"type", "value", b"value"]) -> None: ...
+    def HasField(self, field_name: typing.Literal["_name", b"_name", "_optional_type", b"_optional_type", "_value", b"_value", "name", b"name", "optional_type", b"optional_type", "value", b"value"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["_name", b"_name", "_optional_type", b"_optional_type", "_value", b"_value", "id", b"id", "name", b"name", "optional_type", b"optional_type", "type", b"type", "value", b"value"]) -> None: ...
     @typing.overload
     def WhichOneof(self, oneof_group: typing.Literal["_name", b"_name"]) -> typing.Literal["name"] | None: ...
     @typing.overload
-    def WhichOneof(self, oneof_group: typing.Literal["_type", b"_type"]) -> typing.Literal["type"] | None: ...
+    def WhichOneof(self, oneof_group: typing.Literal["_optional_type", b"_optional_type"]) -> typing.Literal["optional_type"] | None: ...
     @typing.overload
     def WhichOneof(self, oneof_group: typing.Literal["_value", b"_value"]) -> typing.Literal["value"] | None: ...
 
