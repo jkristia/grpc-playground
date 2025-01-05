@@ -18,6 +18,7 @@ class TestDescriptors(unittest.TestCase):
     
     def test_load(self):
         doc = self.doc
+        assert doc.model_prefix == 'Model'
         assert len(doc.modules) == 2
         assert doc.modules[0].name == 'module_a'
         assert doc.modules[1].name == 'module_b'
@@ -44,11 +45,12 @@ class TestDescriptors(unittest.TestCase):
         message = module.find_message('BasicMessageA')
         assert message is not None
         assert message.name == 'BasicMessageA'
+        assert message.class_name == 'ModelBasicMessageA'
         pass
     
     def test_message_fields(self):
         msg = self.getBasicMessageA()
-        fields_as_string = ', '.join([ f.name for f in msg.fields])
+        fields_as_string = ', '.join([ f.json_name for f in msg.fields])
         print(fields_as_string)
         assert fields_as_string == 'name, intValue, floatValue, boolValue, enumValue, repeatedField, subItem, ' \
                                     'oName, oIntValue, oFloatValue, oBoolValue, oEnumValue'
@@ -56,58 +58,58 @@ class TestDescriptors(unittest.TestCase):
         #
         # field with no 'optional' in .proto are still optional by default
         #
-        assert field.name == 'name'
+        assert field.json_name == 'name'
         assert field.property_type == FieldType.str
-        assert field.optional == True # all fields are optional in proto3
+        assert field.is_optional == True # all fields are optional in proto3
         field = cast(ModelFieldDescriptor, msg.find_field('intValue'))
-        assert field.name == 'intValue'
+        assert field.json_name == 'intValue'
         assert field.property_type == FieldType.int
-        assert field.optional == True # all fields are optional in proto3
+        assert field.is_optional == True # all fields are optional in proto3
         field = cast(ModelFieldDescriptor, msg.find_field('floatValue'))
-        assert field.name == 'floatValue'
+        assert field.json_name == 'floatValue'
         assert field.property_type == FieldType.float
         field = cast(ModelFieldDescriptor, msg.find_field('boolValue'))
-        assert field.name == 'boolValue'
+        assert field.json_name == 'boolValue'
         assert field.property_type == FieldType.bool
         field = cast(ModelFieldDescriptor, msg.find_field('enumValue'))
-        assert field.name == 'enumValue'
+        assert field.json_name == 'enumValue'
         assert field.property_type == FieldType.enum
-        assert field.repeated == False
+        assert field.is_repeated == False
         field = cast(ModelFieldDescriptor, msg.find_field('subItem'))
-        assert field.name == 'subItem'
+        assert field.json_name == 'subItem'
         assert field.property_type == FieldType.cls
         assert field.object_type == 'module_a.BasicSubItem'
         #
         # repeated
         #
         field = cast(ModelFieldDescriptor, msg.find_field('repeatedField'))
-        assert field.name == 'repeatedField'
+        assert field.json_name == 'repeatedField'
         assert field.property_type == FieldType.int
-        assert field.optional == True # all fields are optional in proto3
-        assert field.repeated == True
+        assert field.is_optional == True # all fields are optional in proto3
+        assert field.is_repeated == True
         #
         # optional fields
         #
         field = cast(ModelFieldDescriptor, msg.find_field('oName'))
-        assert field.name == 'oName'
+        assert field.json_name == 'oName'
         assert field.property_type == FieldType.str
-        assert field.optional == True
+        assert field.is_optional == True
         field = cast(ModelFieldDescriptor, msg.find_field('oIntValue'))
-        assert field.name == 'oIntValue'
+        assert field.json_name == 'oIntValue'
         assert field.property_type == FieldType.int
-        assert field.optional == True
+        assert field.is_optional == True
         field = cast(ModelFieldDescriptor, msg.find_field('oFloatValue'))
-        assert field.name == 'oFloatValue'
+        assert field.json_name == 'oFloatValue'
         assert field.property_type == FieldType.float
-        assert field.optional == True
+        assert field.is_optional == True
         field = cast(ModelFieldDescriptor, msg.find_field('oBoolValue'))
-        assert field.name == 'oBoolValue'
+        assert field.json_name == 'oBoolValue'
         assert field.property_type == FieldType.bool
-        assert field.optional == True
+        assert field.is_optional == True
         field = cast(ModelFieldDescriptor, msg.find_field('oEnumValue'))
-        assert field.name == 'oEnumValue'
+        assert field.json_name == 'oEnumValue'
         assert field.property_type == FieldType.enum
-        assert field.optional == True
+        assert field.is_optional == True
         
 
 

@@ -1,0 +1,38 @@
+
+from descriptors import ModelGeneratorDoc, ModelMessageDescriptor
+from string_writer import StringWriter
+
+class BaseClassWriter():
+    
+    def __init__(self, doc: ModelGeneratorDoc):
+        self._doc = doc
+        pass
+    
+    def write(self, wr: StringWriter) -> StringWriter:
+        self._write_baseclass(wr)
+        return wr
+    
+    def _write_baseclass(self, wr:StringWriter) -> StringWriter:
+        wr.writeln(f"""
+@dataclass
+class {self._doc.model_prefix}Base():
+    def to_dict(self) -> Any:
+        return self._to_dict(asdict(self))
+    
+    def _to_dict(self, obj) -> Any:
+        # return enum name, not value
+        if isinstance(obj, Enum):
+            return obj.name
+        # remove None values
+        if isinstance(obj, list):
+            return [self._to_dict(item) for item in obj if item is not None]
+        if isinstance(obj, dict):
+            return {{key: self._to_dict(value) for key, value in obj.items() if value is not None }}
+        else:
+            return obj
+        
+    def after_serialize_in(self) -> Any:
+        return self
+        
+                   """)
+        return wr
