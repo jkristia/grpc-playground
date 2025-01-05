@@ -3,7 +3,7 @@ import unittest
 from google.protobuf.json_format import MessageToDict
 from generator_test import module_a_pb2, module_b_pb2
 from descriptors import FieldType, ModelFieldDescriptor, ModelGeneratorDoc, ModelModuleDescriptor, ModelMessageDescriptor 
-from model_autogen import ModelBase, ModelBasicMessageA, ModelBasicEnum, ModelBasicMessageB, ModelBasicSubItem, ModelMsgWithRepeatedProps, ModelSomePoint
+from model_autogen import ModelBase, ModelBasicMessageA, ModelBasicEnum, ModelBasicMessageB, ModelBasicSubItem, ModelMsgWithOneOfProps, ModelMsgWithRepeatedProps, ModelSomePoint
 
 class TestPb2Model(unittest.TestCase):
     
@@ -117,6 +117,8 @@ class TestPb2Model(unittest.TestCase):
             ]
         )
         msg = ModelMsgWithRepeatedProps.from_pb_msg(pb_msg)
+        ### check dict
+        d = msg.to_dict()
         ### clone ###
         clone = msg.clone()
         msg.txt = ''
@@ -135,4 +137,11 @@ class TestPb2Model(unittest.TestCase):
         assert clone.points[1].x == 2
         assert clone.points[2].x == 3
         
-        
+    def test_oneof(self):
+        pb_msg = module_a_pb2.MsgWithOneOfProps(
+            txt='some text',
+            point_a=module_a_pb2.SomePoint(x=1, y=2),
+            point_b=module_a_pb2.SomePoint(x=3, y=4),
+        )
+        msg = ModelMsgWithOneOfProps.from_pb_msg(pb_msg)
+        print(msg)

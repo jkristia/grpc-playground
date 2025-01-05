@@ -14,15 +14,38 @@ class BaseClassWriter():
     
     def _write_baseclass(self, wr:StringWriter) -> StringWriter:
         wr.writeln(f"""
-@dataclass
+# @dataclass
 class {self._doc.model_prefix}Base():
+    # def to_dict(self) -> Any:
+    #     return self._to_dict(asdict(self))
+    
+    # def _to_dict(self, obj) -> Any:
+    #     # return enum name, not value
+    #     if isinstance(obj, Enum):
+    #         return obj.name
+    #     # remove None values
+    #     if isinstance(obj, list):
+    #         return [self._to_dict(item) for item in obj if item is not None]
+    #     if isinstance(obj, dict):
+    #         return {{key: self._to_dict(value) for key, value in obj.items() if value is not None }}
+    #     else:
+    #         return obj
+
     def to_dict(self) -> Any:
-        return self._to_dict(asdict(self))
+        properties = [name for name, value in inspect.getmembers(self.__class__, inspect.isdatadescriptor)]
+        d = {{}}
+        for property in properties:
+            if property.startswith('__'):
+                continue
+            d[property] = getattr(self, property)
+        return self._to_dict(d)
     
     def _to_dict(self, obj) -> Any:
         # return enum name, not value
         if isinstance(obj, Enum):
             return obj.name
+        if isinstance(obj, ModelBase) and obj != self:
+            return obj.to_dict()
         # remove None values
         if isinstance(obj, list):
             return [self._to_dict(item) for item in obj if item is not None]

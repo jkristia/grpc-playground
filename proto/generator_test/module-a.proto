@@ -40,3 +40,12 @@ message MsgWithRepeatedProps {
     repeated BasicEnum enums = 3;
     repeated SomePoint points = 4;
 }
+
+
+message MsgWithOneOfProps {
+    string txt = 1;
+    oneof pointAorB {
+        SomePoint point_a = 10;
+        SomePoint point_b = 11;
+    }
+}

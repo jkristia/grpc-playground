@@ -163,3 +163,28 @@ class MsgWithRepeatedProps(google.protobuf.message.Message):
     def ClearField(self, field_name: typing.Literal["enums", b"enums", "lines", b"lines", "points", b"points", "txt", b"txt"]) -> None: ...
 
 global___MsgWithRepeatedProps = MsgWithRepeatedProps
+
+@typing.final
+class MsgWithOneOfProps(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    TXT_FIELD_NUMBER: builtins.int
+    POINT_A_FIELD_NUMBER: builtins.int
+    POINT_B_FIELD_NUMBER: builtins.int
+    txt: builtins.str
+    @property
+    def point_a(self) -> global___SomePoint: ...
+    @property
+    def point_b(self) -> global___SomePoint: ...
+    def __init__(
+        self,
+        *,
+        txt: builtins.str = ...,
+        point_a: global___SomePoint | None = ...,
+        point_b: global___SomePoint | None = ...,
+    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["pointAorB", b"pointAorB", "point_a", b"point_a", "point_b", b"point_b"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["pointAorB", b"pointAorB", "point_a", b"point_a", "point_b", b"point_b", "txt", b"txt"]) -> None: ...
+    def WhichOneof(self, oneof_group: typing.Literal["pointAorB", b"pointAorB"]) -> typing.Literal["point_a", "point_b"] | None: ...
+
+global___MsgWithOneOfProps = MsgWithOneOfProps

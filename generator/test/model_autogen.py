@@ -1,6 +1,7 @@
 from __future__ import annotations
 from google.protobuf.json_format import MessageToDict
 from typing import Optional, List, Any, cast
+import inspect
 from dataclasses import dataclass, asdict
 from enum import Enum
 """
@@ -18,15 +19,38 @@ from enum import Enum
 MODEL_VERSION = '0.0.1'
 
 
-@dataclass
+# @dataclass
 class ModelBase():
+    # def to_dict(self) -> Any:
+    #     return self._to_dict(asdict(self))
+    
+    # def _to_dict(self, obj) -> Any:
+    #     # return enum name, not value
+    #     if isinstance(obj, Enum):
+    #         return obj.name
+    #     # remove None values
+    #     if isinstance(obj, list):
+    #         return [self._to_dict(item) for item in obj if item is not None]
+    #     if isinstance(obj, dict):
+    #         return {key: self._to_dict(value) for key, value in obj.items() if value is not None }
+    #     else:
+    #         return obj
+
     def to_dict(self) -> Any:
-        return self._to_dict(asdict(self))
+        properties = [name for name, value in inspect.getmembers(self.__class__, inspect.isdatadescriptor)]
+        d = {}
+        for property in properties:
+            if property.startswith('__'):
+                continue
+            d[property] = getattr(self, property)
+        return self._to_dict(d)
     
     def _to_dict(self, obj) -> Any:
         # return enum name, not value
         if isinstance(obj, Enum):
             return obj.name
+        if isinstance(obj, ModelBase) and obj != self:
+            return obj.to_dict()
         # remove None values
         if isinstance(obj, list):
             return [self._to_dict(item) for item in obj if item is not None]
@@ -49,7 +73,7 @@ class ModelBasicEnum(Enum):
 	ABC = 'ABC'
 	LOWER_CASE_VALUE = 'lower_case_value'
 
-@dataclass
+#@dataclass
 class ModelBasicSubItem(ModelBase):
 	CLASS_NAME = 'ModelBasicSubItem'
 	
@@ -62,8 +86,29 @@ class ModelBasicSubItem(ModelBase):
 	SINGLEPOINT = 'singlePoint'
 	
 	# properties
-	name: Optional[str] = None
-	singlePoint: Optional[ModelSomePoint] = None
+	# property name
+	@property
+	def name(self) -> Optional[str]:
+		return self._name
+	@name.setter
+	def name(self, value: Optional[str]):
+		self._name = value
+	
+	# property singlePoint
+	@property
+	def singlePoint(self) -> Optional[ModelSomePoint]:
+		return self._singlePoint
+	@singlePoint.setter
+	def singlePoint(self, value: Optional[ModelSomePoint]):
+		self._singlePoint = value
+	
+	def __init__(self,
+			name: Optional[str] = None,
+			singlePoint: Optional[ModelSomePoint] = None,
+			):
+		self._name = name
+		self._singlePoint = singlePoint
+		pass
 	
     # implementation
 	@classmethod
@@ -85,7 +130,7 @@ class ModelBasicSubItem(ModelBase):
 		return ModelBasicSubItem.from_dict(self.to_dict())
 	pass
 	
-@dataclass
+#@dataclass
 class ModelSomePoint(ModelBase):
 	CLASS_NAME = 'ModelSomePoint'
 	
@@ -98,8 +143,29 @@ class ModelSomePoint(ModelBase):
 	Y = 'y'
 	
 	# properties
-	x: Optional[float] = None
-	y: Optional[float] = None
+	# property x
+	@property
+	def x(self) -> Optional[float]:
+		return self._x
+	@x.setter
+	def x(self, value: Optional[float]):
+		self._x = value
+	
+	# property y
+	@property
+	def y(self) -> Optional[float]:
+		return self._y
+	@y.setter
+	def y(self, value: Optional[float]):
+		self._y = value
+	
+	def __init__(self,
+			x: Optional[float] = None,
+			y: Optional[float] = None,
+			):
+		self._x = x
+		self._y = y
+		pass
 	
     # implementation
 	@classmethod
@@ -118,7 +184,7 @@ class ModelSomePoint(ModelBase):
 		return ModelSomePoint.from_dict(self.to_dict())
 	pass
 	
-@dataclass
+#@dataclass
 class ModelBasicMessageA(ModelBase):
 	CLASS_NAME = 'ModelBasicMessageA'
 	
@@ -151,18 +217,129 @@ class ModelBasicMessageA(ModelBase):
 	O_ENUM_VALUE = 'oEnumValue'
 	
 	# properties
-	name: Optional[str] = None
-	intValue: Optional[int] = None
-	floatValue: Optional[float] = None
-	boolValue: Optional[bool] = None
-	enumValue: Optional[ModelBasicEnum] = None
-	repeatedField: Optional[List[int]] = None
-	subItem: Optional[ModelBasicSubItem] = None
-	oName: Optional[str] = None
-	oIntValue: Optional[int] = None
-	oFloatValue: Optional[float] = None
-	oBoolValue: Optional[bool] = None
-	oEnumValue: Optional[ModelBasicEnum] = None
+	# property name
+	@property
+	def name(self) -> Optional[str]:
+		return self._name
+	@name.setter
+	def name(self, value: Optional[str]):
+		self._name = value
+	
+	# property intValue
+	@property
+	def intValue(self) -> Optional[int]:
+		return self._intValue
+	@intValue.setter
+	def intValue(self, value: Optional[int]):
+		self._intValue = value
+	
+	# property floatValue
+	@property
+	def floatValue(self) -> Optional[float]:
+		return self._floatValue
+	@floatValue.setter
+	def floatValue(self, value: Optional[float]):
+		self._floatValue = value
+	
+	# property boolValue
+	@property
+	def boolValue(self) -> Optional[bool]:
+		return self._boolValue
+	@boolValue.setter
+	def boolValue(self, value: Optional[bool]):
+		self._boolValue = value
+	
+	# property enumValue
+	@property
+	def enumValue(self) -> Optional[ModelBasicEnum]:
+		return self._enumValue
+	@enumValue.setter
+	def enumValue(self, value: Optional[ModelBasicEnum]):
+		self._enumValue = value
+	
+	# property repeatedField
+	@property
+	def repeatedField(self) -> Optional[List[int]]:
+		return self._repeatedField
+	@repeatedField.setter
+	def repeatedField(self, value: Optional[List[int]]):
+		self._repeatedField = value
+	
+	# property subItem
+	@property
+	def subItem(self) -> Optional[ModelBasicSubItem]:
+		return self._subItem
+	@subItem.setter
+	def subItem(self, value: Optional[ModelBasicSubItem]):
+		self._subItem = value
+	
+	# property oName
+	@property
+	def oName(self) -> Optional[str]:
+		return self._oName
+	@oName.setter
+	def oName(self, value: Optional[str]):
+		self._oName = value
+	
+	# property oIntValue
+	@property
+	def oIntValue(self) -> Optional[int]:
+		return self._oIntValue
+	@oIntValue.setter
+	def oIntValue(self, value: Optional[int]):
+		self._oIntValue = value
+	
+	# property oFloatValue
+	@property
+	def oFloatValue(self) -> Optional[float]:
+		return self._oFloatValue
+	@oFloatValue.setter
+	def oFloatValue(self, value: Optional[float]):
+		self._oFloatValue = value
+	
+	# property oBoolValue
+	@property
+	def oBoolValue(self) -> Optional[bool]:
+		return self._oBoolValue
+	@oBoolValue.setter
+	def oBoolValue(self, value: Optional[bool]):
+		self._oBoolValue = value
+	
+	# property oEnumValue
+	@property
+	def oEnumValue(self) -> Optional[ModelBasicEnum]:
+		return self._oEnumValue
+	@oEnumValue.setter
+	def oEnumValue(self, value: Optional[ModelBasicEnum]):
+		self._oEnumValue = value
+	
+	def __init__(self,
+			name: Optional[str] = None,
+			intValue: Optional[int] = None,
+			floatValue: Optional[float] = None,
+			boolValue: Optional[bool] = None,
+			enumValue: Optional[ModelBasicEnum] = None,
+			repeatedField: Optional[List[int]] = None,
+			subItem: Optional[ModelBasicSubItem] = None,
+			oName: Optional[str] = None,
+			oIntValue: Optional[int] = None,
+			oFloatValue: Optional[float] = None,
+			oBoolValue: Optional[bool] = None,
+			oEnumValue: Optional[ModelBasicEnum] = None,
+			):
+		self._name = name
+		self._intValue = intValue
+		self._floatValue = floatValue
+		self._boolValue = boolValue
+		self._enumValue = enumValue
+		self._repeatedField = repeatedField
+		self._subItem = subItem
+		self._oName = oName
+		self._oIntValue = oIntValue
+		self._oFloatValue = oFloatValue
+		self._oBoolValue = oBoolValue
+		self._oEnumValue = oEnumValue
+		pass
 	
     # implementation
 	@classmethod
@@ -188,7 +365,7 @@ class ModelBasicMessageA(ModelBase):
 		return ModelBasicMessageA.from_dict(self.to_dict())
 	pass
 	
-@dataclass
+#@dataclass
 class ModelMsgWithRepeatedProps(ModelBase):
 	CLASS_NAME = 'ModelMsgWithRepeatedProps'
 	
@@ -205,10 +382,49 @@ class ModelMsgWithRepeatedProps(ModelBase):
 	POINTS = 'points'
 	
 	# properties
-	txt: Optional[str] = None
-	lines: Optional[List[str]] = None
-	enums: Optional[List[ModelBasicEnum]] = None
-	points: Optional[List[ModelSomePoint]] = None
+	# property txt
+	@property
+	def txt(self) -> Optional[str]:
+		return self._txt
+	@txt.setter
+	def txt(self, value: Optional[str]):
+		self._txt = value
+	
+	# property lines
+	@property
+	def lines(self) -> Optional[List[str]]:
+		return self._lines
+	@lines.setter
+	def lines(self, value: Optional[List[str]]):
+		self._lines = value
+	
+	# property enums
+	@property
+	def enums(self) -> Optional[List[ModelBasicEnum]]:
+		return self._enums
+	@enums.setter
+	def enums(self, value: Optional[List[ModelBasicEnum]]):
+		self._enums = value
+	
+	# property points
+	@property
+	def points(self) -> Optional[List[ModelSomePoint]]:
+		return self._points
+	@points.setter
+	def points(self, value: Optional[List[ModelSomePoint]]):
+		self._points = value
+	
+	def __init__(self,
+			txt: Optional[str] = None,
+			lines: Optional[List[str]] = None,
+			enums: Optional[List[ModelBasicEnum]] = None,
+			points: Optional[List[ModelSomePoint]] = None,
+			):
+		self._txt = txt
+		self._lines = lines
+		self._enums = enums
+		self._points = points
+		pass
 	
     # implementation
 	@classmethod
@@ -233,7 +449,79 @@ class ModelMsgWithRepeatedProps(ModelBase):
 		return ModelMsgWithRepeatedProps.from_dict(self.to_dict())
 	pass
 	
-@dataclass
+#@dataclass
+class ModelMsgWithOneOfProps(ModelBase):
+	CLASS_NAME = 'ModelMsgWithOneOfProps'
+	
+	# protobuf names
+	PB_TXT = 'txt'
+	PB_POINT_A = 'point_a'
+	PB_POINT_B = 'point_b'
+	
+	# json / dict names
+	TXT = 'txt'
+	POINT_A = 'pointA'
+	POINT_B = 'pointB'
+	
+	# properties
+	# property txt
+	@property
+	def txt(self) -> Optional[str]:
+		return self._txt
+	@txt.setter
+	def txt(self, value: Optional[str]):
+		self._txt = value
+	
+	# property pointA
+	@property
+	def pointA(self) -> Optional[ModelSomePoint]:
+		return self._pointA
+	@pointA.setter
+	def pointA(self, value: Optional[ModelSomePoint]):
+		self._pointA = value
+	
+	# property pointB
+	@property
+	def pointB(self) -> Optional[ModelSomePoint]:
+		return self._pointB
+	@pointB.setter
+	def pointB(self, value: Optional[ModelSomePoint]):
+		self._pointB = value
+	
+	def __init__(self,
+			txt: Optional[str] = None,
+			pointA: Optional[ModelSomePoint] = None,
+			pointB: Optional[ModelSomePoint] = None,
+			):
+		self._txt = txt
+		self._pointA = pointA
+		self._pointB = pointB
+		pass
+	
+    # implementation
+	@classmethod
+	def from_dict(cls, data: dict) -> 'ModelMsgWithOneOfProps':
+		return cls(**data).after_serialize_in()
+	
+	@classmethod
+	def from_pb_msg(cls, pb_msg: Any) -> 'ModelMsgWithOneOfProps':
+		data = ModelBase.dict_from_pb_message(pb_msg)
+		return cls(**data).after_serialize_in()
+                   
+	def after_serialize_in(self) -> 'ModelMsgWithOneOfProps':
+		if self.pointA is not None:
+			raw: Any = self.pointA
+			self.pointA = ModelSomePoint(**raw).after_serialize_in()
+		if self.pointB is not None:
+			raw: Any = self.pointB
+			self.pointB = ModelSomePoint(**raw).after_serialize_in()
+		return self
+	
+	def clone(self) -> 'ModelMsgWithOneOfProps':
+		return ModelMsgWithOneOfProps.from_dict(self.to_dict())
+	pass
+	
+#@dataclass
 class ModelBasicMessageB(ModelBase):
 	CLASS_NAME = 'ModelBasicMessageB'
 	
@@ -244,7 +532,19 @@ class ModelBasicMessageB(ModelBase):
 	NAME = 'name'
 	
 	# properties
-	name: Optional[str] = None
+	# property name
+	@property
+	def name(self) -> Optional[str]:
+		return self._name
+	@name.setter
+	def name(self, value: Optional[str]):
+		self._name = value
+	
+	def __init__(self,
+			name: Optional[str] = None,
+			):
+		self._name = name
+		pass
 	
     # implementation
 	@classmethod

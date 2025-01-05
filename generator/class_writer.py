@@ -15,15 +15,31 @@ class ClassWriter():
         wr.indent()
         self._write_constants(wr)
         self._write_fields(wr)
+        self._write_constructor(wr)
         self._write_serialization(wr)
         self._write_end(wr)
         wr.pop_indent()
         return wr
     
     def _write_class(self, wr: StringWriter):
-        wr.writeln('@dataclass')
+        wr.writeln('#@dataclass')
         wr.writeln(f'class {self._descriptor.class_name}({self._doc.model_prefix}Base):')
         pass
+    
+    def _write_constructor(self, wr: StringWriter):
+        wr.writeln('def __init__(self,')
+        wr.indent().indent()
+        for field in self._descriptor.fields:
+            fieldwriter = FieldWriter(self._doc, self._descriptor, field)
+            fieldwriter.write_constructor_field(wr)
+        wr.writeln('):')
+        wr.pop_indent()
+        for field in self._descriptor.fields:
+            wr.writeln(f'self._{field.json_name} = {field.json_name}')
+        wr.pop_indent()
+        
+        wr.indent().writeln('pass').pop_indent()
+        
     
     def _write_constants(self, wr: StringWriter):
         wr.writeln(f'CLASS_NAME = \'{self._descriptor.class_name}\'')
