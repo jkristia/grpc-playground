@@ -30,8 +30,15 @@ class model_BasicSubItem(model_Base):
 	NAME = 'name'
 	
 	name: Optional[str] = None
+	
+	@classmethod
+	def from_dict(cls, data: dict) -> 'model_BasicSubItem':
+		return cls(**data).after_serialize_in()
+	
+	def clone(self) -> 'model_BasicSubItem':
+		return model_BasicSubItem.from_dict(self.to_dict())
 	pass
-
+	
 @dataclass
 class model_BasicMessageA(model_Base):
 	
@@ -61,8 +68,15 @@ class model_BasicMessageA(model_Base):
 	oFloatValue: Optional[float] = None
 	oBoolValue: Optional[bool] = None
 	oEnumValue: Optional[model_BasicEnum] = None
+	
+	@classmethod
+	def from_dict(cls, data: dict) -> 'model_BasicMessageA':
+		return cls(**data).after_serialize_in()
+	
+	def clone(self) -> 'model_BasicMessageA':
+		return model_BasicMessageA.from_dict(self.to_dict())
 	pass
-
+	
 @dataclass
 class model_BasicMessageB(model_Base):
 	
@@ -70,4 +84,12 @@ class model_BasicMessageB(model_Base):
 	NAME = 'name'
 	
 	name: Optional[str] = None
+	
+	@classmethod
+	def from_dict(cls, data: dict) -> 'model_BasicMessageB':
+		return cls(**data).after_serialize_in()
+	
+	def clone(self) -> 'model_BasicMessageB':
+		return model_BasicMessageB.from_dict(self.to_dict())
 	pass
+	
