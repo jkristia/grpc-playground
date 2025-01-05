@@ -34,5 +34,9 @@ class {self._doc.model_prefix}Base():
     def after_serialize_in(self) -> Any:
         return self
         
+    @classmethod
+    def dict_from_pb_message(cls, pb_msg: Any) -> dict:
+        return MessageToDict(pb_msg, always_print_fields_with_no_presence=True)
+
                    """)
         return wr

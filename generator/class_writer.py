@@ -26,10 +26,13 @@ class ClassWriter():
         pass
     
     def _write_constants(self, wr: StringWriter):
-        wr.writeln('')
         wr.writeln(f'CLASS_NAME = \'{self._descriptor.class_name}\'')
+        wr.writeln('# protobuf names')
         for field in self._descriptor.fields:
-            wr.writeln(f'{field.json_name.upper()} = \'{field.json_name}\'')
+            wr.writeln(f'PB_{field.name.upper()} = \'{field.name}\'')
+        wr.writeln('# json / dict names')
+        for field in self._descriptor.fields:
+            wr.writeln(f'{field.name.upper()} = \'{field.json_name}\'')
             pass
             
     def _write_fields(self, wr: StringWriter):
@@ -39,11 +42,16 @@ class ClassWriter():
             
     def _write_serialization(self, wr: StringWriter):
         name = self._descriptor.class_name
-        wr.writeln('')
-        wr.writeln('@classmethod')
-        wr.writeln(f'def from_dict(cls, data: dict) -> \'{name}\':')
-        wr.indent().writeln('return cls(**data).after_serialize_in()')
-        wr.pop_indent()
+        wr.writeln(f"""
+	@classmethod
+	def from_dict(cls, data: dict) -> '{name}':
+		return cls(**data).after_serialize_in()""")
+        wr.writeln(f"""
+	@classmethod
+	def from_pb_msg(cls, pb_msg: Any) -> '{name}':
+		data = ModelBase.dict_from_pb_message(pb_msg)
+		return cls(**data).after_serialize_in()
+                   """)
         self._write_after_serialize_in(wr)
         wr.writeln('')
         wr.writeln(f'def clone(self) -> \'{name}\':')
@@ -51,21 +59,20 @@ class ClassWriter():
         wr.pop_indent()
         
     def _write_after_serialize_in(self, wr: StringWriter):
-        wr.writeln('')
         wr.writeln(f'def after_serialize_in(self) -> \'{self._descriptor.class_name}\':')
         wr.indent()
         # handle enums, convert from string value to enum type
         fields = [field for field in self._descriptor.fields if field.property_type == FieldType.enum]
         for field in fields:
-            wr.writeln(f'if self.{field.name} is not None:').indent()
-            wr.writeln(f'self.{field.name} = {field.object_type}(self.{field.name})').pop_indent()
+            wr.writeln(f'if self.{field.json_name} is not None:').indent()
+            wr.writeln(f'self.{field.json_name} = {field.object_type}(self.{field.json_name})').pop_indent()
         
         # instantiate child objects, what is serialized in the a dict
         fields = [field for field in self._descriptor.fields if field.property_type == FieldType.cls]
         for field in fields:
-            wr.writeln(f'if self.{field.name} is not None:').indent()
-            wr.writeln(f'raw: Any = self.{field.name}')
-            wr.writeln(f'self.{field.name} = {field.object_type}(**raw).after_serialize_in()').pop_indent()
+            wr.writeln(f'if self.{field.json_name} is not None:').indent()
+            wr.writeln(f'raw: Any = self.{field.json_name}')
+            wr.writeln(f'self.{field.json_name} = {field.object_type}(**raw).after_serialize_in()').pop_indent()
 
         wr.writeln('return self')
         wr.pop_indent()
