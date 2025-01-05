@@ -90,8 +90,6 @@ class TestPb2Model(unittest.TestCase):
                 module_a_pb2.SomePoint(x=3, y=4),
             ]
         )
-        data = ModelMsgWithRepeatedProps.dict_from_pb_message(pb_msg)
-        print(data)
         msg = ModelMsgWithRepeatedProps.from_pb_msg(pb_msg)
         assert msg.txt == 'some text'
         assert msg.lines == ['line1', 'line2']
@@ -106,5 +104,35 @@ class TestPb2Model(unittest.TestCase):
         assert msg.points[0].x == 1
         assert msg.points[1].x == 2
         assert msg.points[2].x == 3
+        
+    def test_repeated_clone(self):
+        pb_msg = module_a_pb2.MsgWithRepeatedProps(
+            txt='some text',
+            lines=['line1', 'line2'],
+            enums=[module_a_pb2.BasicEnum.VALUE_1, module_a_pb2.BasicEnum.ABC],
+            points=[
+                module_a_pb2.SomePoint(x=1, y=2),
+                module_a_pb2.SomePoint(x=2, y=3),
+                module_a_pb2.SomePoint(x=3, y=4),
+            ]
+        )
+        msg = ModelMsgWithRepeatedProps.from_pb_msg(pb_msg)
+        ### clone ###
+        clone = msg.clone()
+        msg.txt = ''
+        msg.lines = []
+        assert clone.txt == 'some text'
+        assert clone.lines == ['line1', 'line2']
+        assert clone.enums is not None
+        assert clone.enums == [ModelBasicEnum.VALUE_1, ModelBasicEnum.ABC]
+        for enum in clone.enums:
+            assert isinstance(enum, ModelBasicEnum)
+        assert clone.points is not None
+        assert len(clone.points) == 3
+        for point in clone.points:
+            assert isinstance(point, ModelSomePoint)
+        assert clone.points[0].x == 1
+        assert clone.points[1].x == 2
+        assert clone.points[2].x == 3
         
         

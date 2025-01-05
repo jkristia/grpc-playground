@@ -52,16 +52,20 @@ class ModelBasicEnum(Enum):
 @dataclass
 class ModelBasicSubItem(ModelBase):
 	CLASS_NAME = 'ModelBasicSubItem'
+	
 	# protobuf names
 	PB_NAME = 'name'
 	PB_SINGLEPOINT = 'singlePoint'
+	
 	# json / dict names
 	NAME = 'name'
 	SINGLEPOINT = 'singlePoint'
 	
+	# properties
 	name: Optional[str] = None
 	singlePoint: Optional[ModelSomePoint] = None
 	
+    # implementation
 	@classmethod
 	def from_dict(cls, data: dict) -> 'ModelBasicSubItem':
 		return cls(**data).after_serialize_in()
@@ -84,16 +88,20 @@ class ModelBasicSubItem(ModelBase):
 @dataclass
 class ModelSomePoint(ModelBase):
 	CLASS_NAME = 'ModelSomePoint'
+	
 	# protobuf names
 	PB_X = 'x'
 	PB_Y = 'y'
+	
 	# json / dict names
 	X = 'x'
 	Y = 'y'
 	
+	# properties
 	x: Optional[float] = None
 	y: Optional[float] = None
 	
+    # implementation
 	@classmethod
 	def from_dict(cls, data: dict) -> 'ModelSomePoint':
 		return cls(**data).after_serialize_in()
@@ -113,6 +121,7 @@ class ModelSomePoint(ModelBase):
 @dataclass
 class ModelBasicMessageA(ModelBase):
 	CLASS_NAME = 'ModelBasicMessageA'
+	
 	# protobuf names
 	PB_NAME = 'name'
 	PB_INT_VALUE = 'int_value'
@@ -126,6 +135,7 @@ class ModelBasicMessageA(ModelBase):
 	PB_O_FLOAT_VALUE = 'o_float_value'
 	PB_O_BOOL_VALUE = 'o_bool_value'
 	PB_O_ENUM_VALUE = 'o_enum_value'
+	
 	# json / dict names
 	NAME = 'name'
 	INT_VALUE = 'intValue'
@@ -140,6 +150,7 @@ class ModelBasicMessageA(ModelBase):
 	O_BOOL_VALUE = 'oBoolValue'
 	O_ENUM_VALUE = 'oEnumValue'
 	
+	# properties
 	name: Optional[str] = None
 	intValue: Optional[int] = None
 	floatValue: Optional[float] = None
@@ -153,6 +164,7 @@ class ModelBasicMessageA(ModelBase):
 	oBoolValue: Optional[bool] = None
 	oEnumValue: Optional[ModelBasicEnum] = None
 	
+    # implementation
 	@classmethod
 	def from_dict(cls, data: dict) -> 'ModelBasicMessageA':
 		return cls(**data).after_serialize_in()
@@ -179,22 +191,26 @@ class ModelBasicMessageA(ModelBase):
 @dataclass
 class ModelMsgWithRepeatedProps(ModelBase):
 	CLASS_NAME = 'ModelMsgWithRepeatedProps'
+	
 	# protobuf names
 	PB_TXT = 'txt'
 	PB_LINES = 'lines'
 	PB_ENUMS = 'enums'
 	PB_POINTS = 'points'
+	
 	# json / dict names
 	TXT = 'txt'
 	LINES = 'lines'
 	ENUMS = 'enums'
 	POINTS = 'points'
 	
+	# properties
 	txt: Optional[str] = None
 	lines: Optional[List[str]] = None
 	enums: Optional[List[ModelBasicEnum]] = None
 	points: Optional[List[ModelSomePoint]] = None
 	
+    # implementation
 	@classmethod
 	def from_dict(cls, data: dict) -> 'ModelMsgWithRepeatedProps':
 		return cls(**data).after_serialize_in()
@@ -220,13 +236,17 @@ class ModelMsgWithRepeatedProps(ModelBase):
 @dataclass
 class ModelBasicMessageB(ModelBase):
 	CLASS_NAME = 'ModelBasicMessageB'
+	
 	# protobuf names
 	PB_NAME = 'name'
+	
 	# json / dict names
 	NAME = 'name'
 	
+	# properties
 	name: Optional[str] = None
 	
+    # implementation
 	@classmethod
 	def from_dict(cls, data: dict) -> 'ModelBasicMessageB':
 		return cls(**data).after_serialize_in()

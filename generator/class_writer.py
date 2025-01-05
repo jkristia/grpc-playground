@@ -27,22 +27,23 @@ class ClassWriter():
     
     def _write_constants(self, wr: StringWriter):
         wr.writeln(f'CLASS_NAME = \'{self._descriptor.class_name}\'')
-        wr.writeln('# protobuf names')
+        wr.writeln('','# protobuf names')
         for field in self._descriptor.fields:
             wr.writeln(f'PB_{field.name.upper()} = \'{field.name}\'')
-        wr.writeln('# json / dict names')
+        wr.writeln('','# json / dict names')
         for field in self._descriptor.fields:
             wr.writeln(f'{field.name.upper()} = \'{field.json_name}\'')
             pass
             
     def _write_fields(self, wr: StringWriter):
-        wr.writeln('')
+        wr.writeln('','# properties')
         for field in self._descriptor.fields:
             FieldWriter(self._doc, self._descriptor, field).write(wr)
             
     def _write_serialization(self, wr: StringWriter):
         name = self._descriptor.class_name
         wr.writeln(f"""
+    # implementation
 	@classmethod
 	def from_dict(cls, data: dict) -> '{name}':
 		return cls(**data).after_serialize_in()""")
