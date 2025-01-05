@@ -1,9 +1,9 @@
 
 from descriptors import ModelGeneratorDoc, ModelMessageDescriptor, FieldType
+from field_writer import FieldWriter
 from string_writer import StringWriter
 
 class ClassWriter():
-    
    
     def __init__(self, doc: ModelGeneratorDoc, descriptor: ModelMessageDescriptor):
         self._doc = doc
@@ -35,18 +35,7 @@ class ClassWriter():
     def _write_fields(self, wr: StringWriter):
         wr.writeln('')
         for field in self._descriptor.fields:
-            
-            property_type = field.property_type.value
-            if field.property_type == FieldType.cls:
-                property_type = field.object_type
-            if field.property_type == FieldType.enum:
-                property_type = field.object_type
-            
-            type = f'Optional[{property_type}]'
-            if (field.is_repeated):
-                type = f'Optional[List[{property_type}]]'
-            wr.writeln(f'{field.json_name}: {type} = None')
-            pass
+            FieldWriter(self._doc, self._descriptor, field).write(wr)
             
     def _write_serialization(self, wr: StringWriter):
         name = self._descriptor.class_name

@@ -1,5 +1,6 @@
 from baseclass_writer import BaseClassWriter
 from class_writer import ClassWriter
+from enum_writer import EnumWriter
 from generator_test import module_a_pb2, module_b_pb2
 from descriptors import FieldType, ModelFieldDescriptor, ModelGeneratorDoc, ModelModuleDescriptor, ModelMessageDescriptor
 from import_writer import ImportWriter
@@ -12,6 +13,12 @@ class Generator():
         self._doc = doc
     
     def write(self) -> StringWriter:
+
+        enum_wr = StringWriter()
+        for module in doc.modules:
+            for message in module.enums:
+                EnumWriter(doc, message).write(enum_wr)
+                
         class_wr = StringWriter()
         for module in doc.modules:
             for message in module.messages:
@@ -19,7 +26,7 @@ class Generator():
         
         import_wr = ImportWriter(doc).write(StringWriter())
         base_wr = BaseClassWriter(doc).write(StringWriter())
-        return StringWriter().add([import_wr, base_wr, class_wr])
+        return StringWriter().add([import_wr, base_wr, enum_wr, class_wr])
         
         
 if __name__ == '__main__':

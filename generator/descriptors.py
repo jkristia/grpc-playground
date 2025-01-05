@@ -1,7 +1,7 @@
 from __future__ import annotations
 from enum import Enum
-from typing import List, Optional, cast
-from google.protobuf.descriptor import FileDescriptor, Descriptor, FieldDescriptor
+from typing import Any, List, Optional, cast
+from google.protobuf.descriptor import FileDescriptor, Descriptor, FieldDescriptor, EnumDescriptor
 
 class FieldType(Enum):
     cls = 'class'
@@ -69,6 +69,26 @@ class ModelFieldDescriptor():
     def __repr__(self) -> str:
         return f'(field) {self.json_name}'
 
+class ModelEnumDescriptor():
+    @property
+    def name(self) -> str:
+        return self.descriptor.name
+    
+    @property
+    def class_name(self) -> str:
+        return f'{self.doc.model_prefix}{self.name}'
+    
+    @property
+    def values(self) -> List[str]:
+        return self.descriptor.values_by_name
+    
+    def __init__(self, doc: ModelGeneratorDoc, descriptor: EnumDescriptor):
+        self.descriptor = descriptor
+        self.doc: ModelGeneratorDoc = doc
+
+    def __repr__(self) -> str:
+        return f'(enum) {self.descriptor.name}'
+
 
 class ModelMessageDescriptor():
     @property
@@ -103,13 +123,25 @@ class ModelModuleDescriptor():
     def __init__(self, doc: ModelGeneratorDoc, descriptor: FileDescriptor):
         self.descriptor = descriptor
         self.messages: List[ModelMessageDescriptor] = []
+        self.enums: List[ModelEnumDescriptor] = []
         for message_type in descriptor.message_types_by_name:
             message = self.descriptor.message_types_by_name[message_type]
             self.messages.append(ModelMessageDescriptor(doc, message))
+        for enum_type in descriptor.enum_types_by_name:
+            message = self.descriptor.enum_types_by_name[enum_type]
+            self.enums.append(ModelEnumDescriptor(doc, message))
         
     def find_message(self, name: str) -> Optional[ModelMessageDescriptor]:
         for message in self.messages:
             if message.name == name:
+                return message
+        return None
+    
+    def find_enum(self, name: str) -> Optional[ModelEnumDescriptor]:
+        for message in self.enums:
+            if message.name == name:
+                return message
+            if message.class_name == name:
                 return message
         return None
             
@@ -120,9 +152,18 @@ class ModelGeneratorDoc():
     
     @property
     def model_prefix(self) -> str:
-        return 'model_'
-    def __init__(self, modules: List[FileDescriptor]):
+        return self._model_prefix
+    
+    @property
+    def model_version(self) -> str:
+        return '0.0.1'
+    
+    def __init__(self,
+                 modules: List[FileDescriptor],
+                 prefix: str = 'Model'
+        ):
         self.modules: List[ModelModuleDescriptor] = []
+        self._model_prefix = prefix
         for module in modules:
             self.modules.append(ModelModuleDescriptor(self, module))
     

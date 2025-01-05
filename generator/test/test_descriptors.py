@@ -6,10 +6,13 @@ from descriptors import FieldType, ModelFieldDescriptor, ModelGeneratorDoc, Mode
 class TestDescriptors(unittest.TestCase):
     
     def setUp(self):
-        self.doc = ModelGeneratorDoc([
-            module_a_pb2.DESCRIPTOR,
-            module_b_pb2.DESCRIPTOR
-        ])
+        self.doc = ModelGeneratorDoc(
+            modules=[
+                module_a_pb2.DESCRIPTOR,
+                module_b_pb2.DESCRIPTOR
+            ],
+            prefix='ModelXyz'
+            )
     
     def getBasicMessageA(self) -> ModelMessageDescriptor:
         module = cast(ModelModuleDescriptor, self.doc.find_module('module_a'))
@@ -18,7 +21,7 @@ class TestDescriptors(unittest.TestCase):
     
     def test_load(self):
         doc = self.doc
-        assert doc.model_prefix == 'Model'
+        assert doc.model_prefix == 'ModelXyz'
         assert len(doc.modules) == 2
         assert doc.modules[0].name == 'module_a'
         assert doc.modules[1].name == 'module_b'
@@ -45,7 +48,7 @@ class TestDescriptors(unittest.TestCase):
         message = module.find_message('BasicMessageA')
         assert message is not None
         assert message.name == 'BasicMessageA'
-        assert message.class_name == 'ModelBasicMessageA'
+        assert message.class_name == 'ModelXyzBasicMessageA'
         pass
     
     def test_message_fields(self):
@@ -78,7 +81,7 @@ class TestDescriptors(unittest.TestCase):
         field = cast(ModelFieldDescriptor, msg.find_field('subItem'))
         assert field.json_name == 'subItem'
         assert field.property_type == FieldType.cls
-        assert field.object_type == 'module_a.BasicSubItem'
+        assert field.object_type == 'ModelXyzBasicSubItem'
         #
         # repeated
         #
@@ -111,7 +114,20 @@ class TestDescriptors(unittest.TestCase):
         assert field.property_type == FieldType.enum
         assert field.is_optional == True
         
+    def test_enums(self):
+        doc = self.doc
+        module = cast(ModelModuleDescriptor, doc.find_module('module_a'))
+        assert len(module.enums) == 1
+        enums_as_string = ', '.join([ f.name for f in module.enums])
+        assert enums_as_string == 'BasicEnum'
+        enums_as_string = ', '.join([ f.class_name for f in module.enums])
+        assert enums_as_string == 'ModelXyzBasicEnum'
+        desc = module.find_enum('BasicEnum')
+        assert desc is not None
+        desc = module.find_enum('ModelXyzBasicEnum')
+        assert desc is not None
 
+        
 
 if __name__ == '__main__':
     unittest.main()

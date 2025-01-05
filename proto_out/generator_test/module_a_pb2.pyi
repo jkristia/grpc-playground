@@ -28,12 +28,14 @@ class _BasicEnumEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._Enum
     UNKNOWN: _BasicEnum.ValueType  # 0
     VALUE_1: _BasicEnum.ValueType  # 1
     ABC: _BasicEnum.ValueType  # 2
+    lower_case_value: _BasicEnum.ValueType  # 10
 
 class BasicEnum(_BasicEnum, metaclass=_BasicEnumEnumTypeWrapper): ...
 
 UNKNOWN: BasicEnum.ValueType  # 0
 VALUE_1: BasicEnum.ValueType  # 1
 ABC: BasicEnum.ValueType  # 2
+lower_case_value: BasicEnum.ValueType  # 10
 global___BasicEnum = BasicEnum
 
 @typing.final

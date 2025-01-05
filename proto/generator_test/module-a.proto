@@ -6,6 +6,7 @@ enum BasicEnum {
     UNKNOWN = 0;
     VALUE_1 = 1;
     ABC = 2;
+    lower_case_value = 10;
 }
 
 message BasicSubItem {
