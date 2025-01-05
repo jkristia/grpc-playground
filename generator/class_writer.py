@@ -44,9 +44,30 @@ class ClassWriter():
         wr.writeln(f'def from_dict(cls, data: dict) -> \'{name}\':')
         wr.indent().writeln('return cls(**data).after_serialize_in()')
         wr.pop_indent()
+        self._write_after_serialize_in(wr)
         wr.writeln('')
         wr.writeln(f'def clone(self) -> \'{name}\':')
         wr.indent().writeln(f'return {name}.from_dict(self.to_dict())')
+        wr.pop_indent()
+        
+    def _write_after_serialize_in(self, wr: StringWriter):
+        wr.writeln('')
+        wr.writeln(f'def after_serialize_in(self) -> \'{self._descriptor.class_name}\':')
+        wr.indent()
+        # handle enums, convert from string value to enum type
+        fields = [field for field in self._descriptor.fields if field.property_type == FieldType.enum]
+        for field in fields:
+            wr.writeln(f'if self.{field.name} is not None:').indent()
+            wr.writeln(f'self.{field.name} = {field.object_type}(self.{field.name})').pop_indent()
+        
+        # instantiate child objects, what is serialized in the a dict
+        fields = [field for field in self._descriptor.fields if field.property_type == FieldType.cls]
+        for field in fields:
+            wr.writeln(f'if self.{field.name} is not None:').indent()
+            wr.writeln(f'raw: Any = self.{field.name}')
+            wr.writeln(f'self.{field.name} = {field.object_type}(**raw).after_serialize_in()').pop_indent()
+
+        wr.writeln('return self')
         wr.pop_indent()
         
     def _write_end(self, wr: StringWriter):

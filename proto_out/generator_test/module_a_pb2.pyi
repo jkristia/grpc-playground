@@ -43,15 +43,38 @@ class BasicSubItem(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     NAME_FIELD_NUMBER: builtins.int
+    SINGLEPOINT_FIELD_NUMBER: builtins.int
     name: builtins.str
+    @property
+    def singlePoint(self) -> global___SomePoint: ...
     def __init__(
         self,
         *,
         name: builtins.str = ...,
+        singlePoint: global___SomePoint | None = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing.Literal["name", b"name"]) -> None: ...
+    def HasField(self, field_name: typing.Literal["singlePoint", b"singlePoint"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["name", b"name", "singlePoint", b"singlePoint"]) -> None: ...
 
 global___BasicSubItem = BasicSubItem
+
+@typing.final
+class SomePoint(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    X_FIELD_NUMBER: builtins.int
+    Y_FIELD_NUMBER: builtins.int
+    x: builtins.float
+    y: builtins.float
+    def __init__(
+        self,
+        *,
+        x: builtins.float = ...,
+        y: builtins.float = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["x", b"x", "y", b"y"]) -> None: ...
+
+global___SomePoint = SomePoint
 
 @typing.final
 class BasicMessageA(google.protobuf.message.Message):

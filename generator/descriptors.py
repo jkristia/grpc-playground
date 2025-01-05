@@ -156,14 +156,16 @@ class ModelGeneratorDoc():
     
     @property
     def model_version(self) -> str:
-        return '0.0.1'
+        return self._model_version
     
     def __init__(self,
                  modules: List[FileDescriptor],
-                 prefix: str = 'Model'
+                 prefix: str = 'Model',
+                 version: str = '0.0.1'
         ):
         self.modules: List[ModelModuleDescriptor] = []
         self._model_prefix = prefix
+        self._model_version = version
         for module in modules:
             self.modules.append(ModelModuleDescriptor(self, module))
     

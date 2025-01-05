@@ -11,7 +11,13 @@ enum BasicEnum {
 
 message BasicSubItem {
     string name = 1;
+    SomePoint singlePoint = 2;
 }
+message SomePoint {
+    float x = 1;
+    float y = 2;
+}
+
 message BasicMessageA {
     string name = 1;
     int32 int_value = 2;

@@ -36,7 +36,7 @@ if __name__ == '__main__':
     ])
     generator = Generator(doc)
     wr = generator.write()
-    with open('autogen.py', 'w') as file:
+    with open('generator/test/autogen.py', 'w') as file:
         file.write(wr.to_string())
             
     

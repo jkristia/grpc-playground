@@ -24,17 +24,19 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1dgenerator_test/module-a.proto\x12\x08module_a\"\x1c\n\x0c\x42\x61sicSubItem\x12\x0c\n\x04name\x18\x01 \x01(\t\"\xa9\x03\n\rBasicMessageA\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tint_value\x18\x02 \x01(\x05\x12\x13\n\x0b\x66loat_value\x18\x03 \x01(\x02\x12\x12\n\nbool_value\x18\x04 \x01(\x08\x12\'\n\nenum_value\x18\x05 \x01(\x0e\x32\x13.module_a.BasicEnum\x12\x16\n\x0erepeated_field\x18\x06 \x03(\x05\x12(\n\x08sub_item\x18\x07 \x01(\x0b\x32\x16.module_a.BasicSubItem\x12\x13\n\x06o_name\x18\x33 \x01(\tH\x00\x88\x01\x01\x12\x18\n\x0bo_int_value\x18\x34 \x01(\x05H\x01\x88\x01\x01\x12\x1a\n\ro_float_value\x18\x35 \x01(\x02H\x02\x88\x01\x01\x12\x19\n\x0co_bool_value\x18\x36 \x01(\x08H\x03\x88\x01\x01\x12.\n\x0co_enum_value\x18\x37 \x01(\x0e\x32\x13.module_a.BasicEnumH\x04\x88\x01\x01\x42\t\n\x07_o_nameB\x0e\n\x0c_o_int_valueB\x10\n\x0e_o_float_valueB\x0f\n\r_o_bool_valueB\x0f\n\r_o_enum_value*D\n\tBasicEnum\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07VALUE_1\x10\x01\x12\x07\n\x03\x41\x42\x43\x10\x02\x12\x14\n\x10lower_case_value\x10\nb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1dgenerator_test/module-a.proto\x12\x08module_a\"F\n\x0c\x42\x61sicSubItem\x12\x0c\n\x04name\x18\x01 \x01(\t\x12(\n\x0bsinglePoint\x18\x02 \x01(\x0b\x32\x13.module_a.SomePoint\"!\n\tSomePoint\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\"\xa9\x03\n\rBasicMessageA\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\tint_value\x18\x02 \x01(\x05\x12\x13\n\x0b\x66loat_value\x18\x03 \x01(\x02\x12\x12\n\nbool_value\x18\x04 \x01(\x08\x12\'\n\nenum_value\x18\x05 \x01(\x0e\x32\x13.module_a.BasicEnum\x12\x16\n\x0erepeated_field\x18\x06 \x03(\x05\x12(\n\x08sub_item\x18\x07 \x01(\x0b\x32\x16.module_a.BasicSubItem\x12\x13\n\x06o_name\x18\x33 \x01(\tH\x00\x88\x01\x01\x12\x18\n\x0bo_int_value\x18\x34 \x01(\x05H\x01\x88\x01\x01\x12\x1a\n\ro_float_value\x18\x35 \x01(\x02H\x02\x88\x01\x01\x12\x19\n\x0co_bool_value\x18\x36 \x01(\x08H\x03\x88\x01\x01\x12.\n\x0co_enum_value\x18\x37 \x01(\x0e\x32\x13.module_a.BasicEnumH\x04\x88\x01\x01\x42\t\n\x07_o_nameB\x0e\n\x0c_o_int_valueB\x10\n\x0e_o_float_valueB\x0f\n\r_o_bool_valueB\x0f\n\r_o_enum_value*D\n\tBasicEnum\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07VALUE_1\x10\x01\x12\x07\n\x03\x41\x42\x43\x10\x02\x12\x14\n\x10lower_case_value\x10\nb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'generator_test.module_a_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_BASICENUM']._serialized_start=501
-  _globals['_BASICENUM']._serialized_end=569
+  _globals['_BASICENUM']._serialized_start=578
+  _globals['_BASICENUM']._serialized_end=646
   _globals['_BASICSUBITEM']._serialized_start=43
-  _globals['_BASICSUBITEM']._serialized_end=71
-  _globals['_BASICMESSAGEA']._serialized_start=74
-  _globals['_BASICMESSAGEA']._serialized_end=499
+  _globals['_BASICSUBITEM']._serialized_end=113
+  _globals['_SOMEPOINT']._serialized_start=115
+  _globals['_SOMEPOINT']._serialized_end=148
+  _globals['_BASICMESSAGEA']._serialized_start=151
+  _globals['_BASICMESSAGEA']._serialized_end=576
 # @@protoc_insertion_point(module_scope)
