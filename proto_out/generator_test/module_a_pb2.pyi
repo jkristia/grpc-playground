@@ -136,3 +136,30 @@ class BasicMessageA(google.protobuf.message.Message):
     def WhichOneof(self, oneof_group: typing.Literal["_o_name", b"_o_name"]) -> typing.Literal["o_name"] | None: ...
 
 global___BasicMessageA = BasicMessageA
+
+@typing.final
+class MsgWithRepeatedProps(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    TXT_FIELD_NUMBER: builtins.int
+    LINES_FIELD_NUMBER: builtins.int
+    ENUMS_FIELD_NUMBER: builtins.int
+    POINTS_FIELD_NUMBER: builtins.int
+    txt: builtins.str
+    @property
+    def lines(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[builtins.str]: ...
+    @property
+    def enums(self) -> google.protobuf.internal.containers.RepeatedScalarFieldContainer[global___BasicEnum.ValueType]: ...
+    @property
+    def points(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[global___SomePoint]: ...
+    def __init__(
+        self,
+        *,
+        txt: builtins.str = ...,
+        lines: collections.abc.Iterable[builtins.str] | None = ...,
+        enums: collections.abc.Iterable[global___BasicEnum.ValueType] | None = ...,
+        points: collections.abc.Iterable[global___SomePoint] | None = ...,
+    ) -> None: ...
+    def ClearField(self, field_name: typing.Literal["enums", b"enums", "lines", b"lines", "points", b"points", "txt", b"txt"]) -> None: ...
+
+global___MsgWithRepeatedProps = MsgWithRepeatedProps

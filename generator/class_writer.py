@@ -65,14 +65,22 @@ class ClassWriter():
         fields = [field for field in self._descriptor.fields if field.property_type == FieldType.enum]
         for field in fields:
             wr.writeln(f'if self.{field.json_name} is not None:').indent()
-            wr.writeln(f'self.{field.json_name} = {field.object_type}(self.{field.json_name})').pop_indent()
+            if field.is_repeated:
+                wr.writeln(f'values = cast(List[str], self.{field.json_name}) ')
+                wr.writeln(f'self.{field.json_name} = [{field.object_type}(value) for value in values]').pop_indent()
+            else:
+                wr.writeln(f'self.{field.json_name} = {field.object_type}(self.{field.json_name})').pop_indent()
         
         # instantiate child objects, what is serialized in the a dict
         fields = [field for field in self._descriptor.fields if field.property_type == FieldType.cls]
         for field in fields:
             wr.writeln(f'if self.{field.json_name} is not None:').indent()
-            wr.writeln(f'raw: Any = self.{field.json_name}')
-            wr.writeln(f'self.{field.json_name} = {field.object_type}(**raw).after_serialize_in()').pop_indent()
+            if field.is_repeated:
+                wr.writeln(f'values = cast(List[Any], self.{field.json_name}) ')
+                wr.writeln(f'self.{field.json_name} = [{field.object_type}(**value).after_serialize_in() for value in values]').pop_indent()
+            else:
+                wr.writeln(f'raw: Any = self.{field.json_name}')
+                wr.writeln(f'self.{field.json_name} = {field.object_type}(**raw).after_serialize_in()').pop_indent()
 
         wr.writeln('return self')
         wr.pop_indent()

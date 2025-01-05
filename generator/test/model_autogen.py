@@ -1,6 +1,6 @@
 from __future__ import annotations
 from google.protobuf.json_format import MessageToDict
-from typing import Optional, List, Any
+from typing import Optional, List, Any, cast
 from dataclasses import dataclass, asdict
 from enum import Enum
 """
@@ -174,6 +174,47 @@ class ModelBasicMessageA(ModelBase):
 	
 	def clone(self) -> 'ModelBasicMessageA':
 		return ModelBasicMessageA.from_dict(self.to_dict())
+	pass
+	
+@dataclass
+class ModelMsgWithRepeatedProps(ModelBase):
+	CLASS_NAME = 'ModelMsgWithRepeatedProps'
+	# protobuf names
+	PB_TXT = 'txt'
+	PB_LINES = 'lines'
+	PB_ENUMS = 'enums'
+	PB_POINTS = 'points'
+	# json / dict names
+	TXT = 'txt'
+	LINES = 'lines'
+	ENUMS = 'enums'
+	POINTS = 'points'
+	
+	txt: Optional[str] = None
+	lines: Optional[List[str]] = None
+	enums: Optional[List[ModelBasicEnum]] = None
+	points: Optional[List[ModelSomePoint]] = None
+	
+	@classmethod
+	def from_dict(cls, data: dict) -> 'ModelMsgWithRepeatedProps':
+		return cls(**data).after_serialize_in()
+	
+	@classmethod
+	def from_pb_msg(cls, pb_msg: Any) -> 'ModelMsgWithRepeatedProps':
+		data = ModelBase.dict_from_pb_message(pb_msg)
+		return cls(**data).after_serialize_in()
+                   
+	def after_serialize_in(self) -> 'ModelMsgWithRepeatedProps':
+		if self.enums is not None:
+			values = cast(List[str], self.enums) 
+			self.enums = [ModelBasicEnum(value) for value in values]
+		if self.points is not None:
+			values = cast(List[Any], self.points) 
+			self.points = [ModelSomePoint(**value).after_serialize_in() for value in values]
+		return self
+	
+	def clone(self) -> 'ModelMsgWithRepeatedProps':
+		return ModelMsgWithRepeatedProps.from_dict(self.to_dict())
 	pass
 	
 @dataclass

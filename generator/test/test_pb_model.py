@@ -3,7 +3,7 @@ import unittest
 from google.protobuf.json_format import MessageToDict
 from generator_test import module_a_pb2, module_b_pb2
 from descriptors import FieldType, ModelFieldDescriptor, ModelGeneratorDoc, ModelModuleDescriptor, ModelMessageDescriptor 
-from model_autogen import ModelBase, ModelBasicMessageA, ModelBasicEnum, ModelBasicMessageB, ModelBasicSubItem, ModelSomePoint
+from model_autogen import ModelBase, ModelBasicMessageA, ModelBasicEnum, ModelBasicMessageB, ModelBasicSubItem, ModelMsgWithRepeatedProps, ModelSomePoint
 
 class TestPb2Model(unittest.TestCase):
     
@@ -78,6 +78,33 @@ class TestPb2Model(unittest.TestCase):
         assert isinstance(msg.subItem.singlePoint, ModelSomePoint)
         assert msg.subItem.singlePoint.y == 2
         
-        
+    def test_repeated_values(self):
+        # create protobuf message
+        pb_msg = module_a_pb2.MsgWithRepeatedProps(
+            txt='some text',
+            lines=['line1', 'line2'],
+            enums=[module_a_pb2.BasicEnum.VALUE_1, module_a_pb2.BasicEnum.ABC],
+            points=[
+                module_a_pb2.SomePoint(x=1, y=2),
+                module_a_pb2.SomePoint(x=2, y=3),
+                module_a_pb2.SomePoint(x=3, y=4),
+            ]
+        )
+        data = ModelMsgWithRepeatedProps.dict_from_pb_message(pb_msg)
+        print(data)
+        msg = ModelMsgWithRepeatedProps.from_pb_msg(pb_msg)
+        assert msg.txt == 'some text'
+        assert msg.lines == ['line1', 'line2']
+        assert msg.enums is not None
+        assert msg.enums == [ModelBasicEnum.VALUE_1, ModelBasicEnum.ABC]
+        for enum in msg.enums:
+            assert isinstance(enum, ModelBasicEnum)
+        assert msg.points is not None
+        assert len(msg.points) == 3
+        for point in msg.points:
+            assert isinstance(point, ModelSomePoint)
+        assert msg.points[0].x == 1
+        assert msg.points[1].x == 2
+        assert msg.points[2].x == 3
         
         

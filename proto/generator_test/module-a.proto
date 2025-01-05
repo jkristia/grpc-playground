@@ -33,3 +33,10 @@ message BasicMessageA {
     optional bool o_bool_value = 54;
     optional BasicEnum o_enum_value = 55;
 }
+
+message MsgWithRepeatedProps {
+    string txt = 1;
+    repeated string lines = 2;
+    repeated BasicEnum enums = 3;
+    repeated SomePoint points = 4;
+}
