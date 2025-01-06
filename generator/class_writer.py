@@ -97,8 +97,7 @@ class ClassWriter():
 				self._write_map_initialize(wr, field)
 				continue
 			if field.is_timestamp:
-				wr.writeln(f'raw: Any = self.{field.json_name}')
-				wr.writeln(f'self.{field.json_name} = {field.object_type}(raw)').pop_indent()
+				self._write_timestamp(wr, field)
 				continue
 			if field.is_repeated:
 				wr.writeln(f'values = cast(List[Any], self.{field.json_name}) ')
@@ -109,6 +108,14 @@ class ClassWriter():
 
 		wr.writeln('return self')
 		wr.pop_indent()
+
+	def _write_timestamp(self, wr: StringWriter, field: ModelFieldDescriptor):
+			if field.is_repeated:
+				wr.writeln(f'values = cast(List[str], self.{field.json_name}) ')
+				wr.writeln(f'self.{field.json_name} = [{field.object_type}(value) for value in values]').pop_indent()
+			else:
+				wr.writeln(f'raw: Any = self.{field.json_name}')
+				wr.writeln(f'self.{field.json_name} = {field.object_type}(raw)').pop_indent()
 
 	def _write_map_initialize(self, wr: StringWriter, field: ModelFieldDescriptor):
 		if field.is_map_value_type_class:

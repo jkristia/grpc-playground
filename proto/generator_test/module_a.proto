@@ -60,5 +60,6 @@ message MsgWithSet {
 
 message MsgWithTimestamp {
     google.protobuf.Timestamp some_timestamp = 1;
-    int32 some_value = 2;
+    repeated google.protobuf.Timestamp list_timestamp = 2;
+    int32 some_value = 3;
 }

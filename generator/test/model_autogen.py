@@ -599,10 +599,12 @@ class ModuleA_MsgWithTimestamp(ModelBase):
 	
 	# protobuf names
 	PB_SOME_TIMESTAMP = 'some_timestamp'
+	PB_LIST_TIMESTAMP = 'list_timestamp'
 	PB_SOME_VALUE = 'some_value'
 	
 	# json / dict names
 	SOME_TIMESTAMP = 'someTimestamp'
+	LIST_TIMESTAMP = 'listTimestamp'
 	SOME_VALUE = 'someValue'
 	
 	# property someTimestamp
@@ -612,6 +614,14 @@ class ModuleA_MsgWithTimestamp(ModelBase):
 	@someTimestamp.setter
 	def someTimestamp(self, value: Optional[Google_Timestamp]):
 		self._someTimestamp = value
+	
+	# property listTimestamp
+	@property
+	def listTimestamp(self) -> Optional[List[Google_Timestamp]]:
+		return self._listTimestamp
+	@listTimestamp.setter
+	def listTimestamp(self, value: Optional[List[Google_Timestamp]]):
+		self._listTimestamp = value
 	
 	# property someValue
 	@property
@@ -624,9 +634,11 @@ class ModuleA_MsgWithTimestamp(ModelBase):
 	# constructor - ModuleA_MsgWithTimestamp
 	def __init__(self,
 			someTimestamp: Optional[Google_Timestamp] = None,
+			listTimestamp: Optional[List[Google_Timestamp]] = None,
 			someValue: Optional[int] = None,
 			):
 		self._someTimestamp = someTimestamp
+		self._listTimestamp = listTimestamp
 		self._someValue = someValue
 		pass
 	
@@ -644,6 +656,9 @@ class ModuleA_MsgWithTimestamp(ModelBase):
 		if self.someTimestamp is not None:
 			raw: Any = self.someTimestamp
 			self.someTimestamp = Google_Timestamp(raw)
+		if self.listTimestamp is not None:
+			values = cast(List[str], self.listTimestamp) 
+			self.listTimestamp = [Google_Timestamp(value) for value in values]
 		return self
 	
 	def clone(self) -> 'ModuleA_MsgWithTimestamp':

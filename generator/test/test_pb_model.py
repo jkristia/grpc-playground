@@ -195,6 +195,25 @@ class TestPb2Model(unittest.TestCase):
         assert pb_msg_2.some_value == 123
         assert pb_msg_2.some_timestamp.ToJsonString() == '1970-04-29T02:10:40.000000456Z'
 
+    def test_listtimestamp(self):
 
+        pb_msg = module_a_pb2.MsgWithTimestamp(
+            list_timestamp=[
+                Timestamp(seconds=10203040, nanos=456),
+                Timestamp(seconds=40302010, nanos=654),
+            ]
+        )
+        msg = ModuleA_MsgWithTimestamp.from_pb_msg(pb_msg)
+        assert msg.listTimestamp
+        assert len(msg.listTimestamp) == 2
+        assert isinstance(msg.listTimestamp[0], Google_Timestamp)
+        assert msg.listTimestamp[0].time == '1970-04-29T02:10:40.000000456Z'
+        assert isinstance(msg.listTimestamp[1], Google_Timestamp)
+        assert msg.listTimestamp[1].time == '1971-04-12T11:00:10.000000654Z'
+
+        pb_msg_2 = module_a_pb2.MsgWithTimestamp()
+        ParseDict(msg.to_dict(), pb_msg_2)
+        assert pb_msg_2.list_timestamp[0].ToJsonString() == '1970-04-29T02:10:40.000000456Z'
+        assert pb_msg_2.list_timestamp[1].ToJsonString() == '1971-04-12T11:00:10.000000654Z'
 
 
