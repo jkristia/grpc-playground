@@ -33,7 +33,7 @@ if __name__ == '__main__':
     doc = ModelGeneratorDoc([
         module_a_pb2.DESCRIPTOR,
         module_b_pb2.DESCRIPTOR
-    ])
+    ], prefix='')
     generator = Generator(doc)
     wr = generator.write()
     with open('generator/test/model_autogen.py', 'w') as file:

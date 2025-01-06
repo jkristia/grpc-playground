@@ -51,6 +51,18 @@ def map_field_type(field_type: int) -> FieldType | str:
 
     return f'unknown({field_type})'
 
+def format_class_name(name: str) -> str:
+    # convert snake case to pascal case
+    # format is <module>.x.y.<classname>
+    def snake_to_pascal(s: str) -> str:
+        pieces = s.split('_')
+        return ''.join(p.capitalize() for p in pieces)
+    pieces = name.split('.')
+    module = snake_to_pascal(pieces[0])
+    classname = pieces[-1]
+    return module + '_' + classname
+
+
 class ModelFieldDescriptor():
     @property
     def json_name(self) -> str:
@@ -69,10 +81,10 @@ class ModelFieldDescriptor():
     @property
     def object_type(self) -> str:
         if self.property_type == FieldType.cls and self.descriptor.message_type is not None:
-            return self.doc.model_prefix + self.descriptor.message_type.name
+            return self.doc.model_prefix + format_class_name(self.descriptor.message_type.full_name)
             # return self.descriptor.message_type.full_name
         if self.property_type == FieldType.enum and self.descriptor.enum_type is not None:
-            return self.doc.model_prefix + self.descriptor.enum_type.name
+            return self.doc.model_prefix + format_class_name(self.descriptor.enum_type.full_name)
             # return self.descriptor.message_type.full_name
         return ''
     
@@ -110,7 +122,8 @@ class ModelEnumDescriptor():
     
     @property
     def class_name(self) -> str:
-        return f'{self.doc.model_prefix}{self.name}'
+        name = format_class_name(self.descriptor.full_name)
+        return f'{self.doc.model_prefix}{name}'
     
     @property
     def values(self) -> List[str]:
@@ -131,7 +144,8 @@ class ModelMessageDescriptor():
     
     @property
     def class_name(self) -> str:
-        return f'{self.doc.model_prefix}{self.name}'
+        name = format_class_name(self.descriptor.full_name)
+        return f'{self.doc.model_prefix}{name}'
     
     def __init__(self, doc: ModelGeneratorDoc, descriptor: Descriptor):
         self.descriptor = descriptor
@@ -192,6 +206,10 @@ class ModelGeneratorDoc():
     def model_version(self) -> str:
         return self._model_version
     
+    @property
+    def baseclass_name(self) -> str:
+        return 'ModelBase'
+
     def __init__(self,
                  modules: List[FileDescriptor],
                  prefix: str = 'Model',

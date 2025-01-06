@@ -48,7 +48,7 @@ class TestDescriptors(unittest.TestCase):
         message = module.find_message('BasicMessageA')
         assert message is not None
         assert message.name == 'BasicMessageA'
-        assert message.class_name == 'ModelXyzBasicMessageA'
+        assert message.class_name == 'ModelXyzModuleA_BasicMessageA'
         pass
     
     def test_message_fields(self):
@@ -81,7 +81,7 @@ class TestDescriptors(unittest.TestCase):
         field = cast(ModelFieldDescriptor, msg.find_field('subItem'))
         assert field.json_name == 'subItem'
         assert field.property_type == FieldType.cls
-        assert field.object_type == 'ModelXyzBasicSubItem'
+        assert field.object_type == 'ModelXyzModuleA_BasicSubItem'
         #
         # repeated
         #
@@ -121,10 +121,10 @@ class TestDescriptors(unittest.TestCase):
         enums_as_string = ', '.join([ f.name for f in module.enums])
         assert enums_as_string == 'BasicEnum'
         enums_as_string = ', '.join([ f.class_name for f in module.enums])
-        assert enums_as_string == 'ModelXyzBasicEnum'
+        assert enums_as_string == 'ModelXyzModuleA_BasicEnum'
         desc = module.find_enum('BasicEnum')
         assert desc is not None
-        desc = module.find_enum('ModelXyzBasicEnum')
+        desc = module.find_enum('ModelXyzModuleA_BasicEnum')
         assert desc is not None
 
         

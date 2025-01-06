@@ -14,7 +14,7 @@ class BaseClassWriter():
 	
 	def _write_baseclass(self, wr:StringWriter) -> StringWriter:
 		wr.writeln(f"""
-class {self._doc.model_prefix}Base():
+class {self._doc.baseclass_name}():
 	def to_dict(self) -> Any:
 		properties = [name for name, value in inspect.getmembers(self.__class__, inspect.isdatadescriptor)]
 		d = {{}}

@@ -51,15 +51,15 @@ class ModelBase():
 
 				   
 ### enum: module_a.BasicEnum
-class ModelBasicEnum(Enum):
+class ModuleA_BasicEnum(Enum):
 	UNKNOWN = 'UNKNOWN'
 	VALUE_1 = 'VALUE_1'
 	ABC = 'ABC'
 	LOWER_CASE_VALUE = 'lower_case_value'
 
 ### message: module_a.BasicSubItem
-class ModelBasicSubItem(ModelBase):
-	CLASS_NAME = 'ModelBasicSubItem'
+class ModuleA_BasicSubItem(ModelBase):
+	CLASS_NAME = 'ModuleA_BasicSubItem'
 	
 	# protobuf names
 	PB_NAME = 'name'
@@ -79,16 +79,16 @@ class ModelBasicSubItem(ModelBase):
 	
 	# property singlePoint
 	@property
-	def singlePoint(self) -> Optional[ModelSomePoint]:
+	def singlePoint(self) -> Optional[ModuleA_SomePoint]:
 		return self._singlePoint
 	@singlePoint.setter
-	def singlePoint(self, value: Optional[ModelSomePoint]):
+	def singlePoint(self, value: Optional[ModuleA_SomePoint]):
 		self._singlePoint = value
 	
-	# constructor - ModelBasicSubItem
+	# constructor - ModuleA_BasicSubItem
 	def __init__(self,
 			name: Optional[str] = None,
-			singlePoint: Optional[ModelSomePoint] = None,
+			singlePoint: Optional[ModuleA_SomePoint] = None,
 			):
 		self._name = name
 		self._singlePoint = singlePoint
@@ -96,27 +96,27 @@ class ModelBasicSubItem(ModelBase):
 	
 	# serialization
 	@classmethod
-	def from_dict(cls, data: dict) -> 'ModelBasicSubItem':
+	def from_dict(cls, data: dict) -> 'ModuleA_BasicSubItem':
 		return cls(**data).after_serialize_in()
 	
 	@classmethod
-	def from_pb_msg(cls, pb_msg: Any) -> 'ModelBasicSubItem':
+	def from_pb_msg(cls, pb_msg: Any) -> 'ModuleA_BasicSubItem':
 		data = ModelBase.dict_from_pb_message(pb_msg)
 		return cls(**data).after_serialize_in()
 				   
-	def after_serialize_in(self) -> 'ModelBasicSubItem':
+	def after_serialize_in(self) -> 'ModuleA_BasicSubItem':
 		if self.singlePoint is not None:
 			raw: Any = self.singlePoint
-			self.singlePoint = ModelSomePoint(**raw).after_serialize_in()
+			self.singlePoint = ModuleA_SomePoint(**raw).after_serialize_in()
 		return self
 	
-	def clone(self) -> 'ModelBasicSubItem':
-		return ModelBasicSubItem.from_dict(self.to_dict())
+	def clone(self) -> 'ModuleA_BasicSubItem':
+		return ModuleA_BasicSubItem.from_dict(self.to_dict())
 	pass
 	
 ### message: module_a.SomePoint
-class ModelSomePoint(ModelBase):
-	CLASS_NAME = 'ModelSomePoint'
+class ModuleA_SomePoint(ModelBase):
+	CLASS_NAME = 'ModuleA_SomePoint'
 	
 	# protobuf names
 	PB_X = 'x'
@@ -142,7 +142,7 @@ class ModelSomePoint(ModelBase):
 	def y(self, value: Optional[float]):
 		self._y = value
 	
-	# constructor - ModelSomePoint
+	# constructor - ModuleA_SomePoint
 	def __init__(self,
 			x: Optional[float] = None,
 			y: Optional[float] = None,
@@ -153,24 +153,24 @@ class ModelSomePoint(ModelBase):
 	
 	# serialization
 	@classmethod
-	def from_dict(cls, data: dict) -> 'ModelSomePoint':
+	def from_dict(cls, data: dict) -> 'ModuleA_SomePoint':
 		return cls(**data).after_serialize_in()
 	
 	@classmethod
-	def from_pb_msg(cls, pb_msg: Any) -> 'ModelSomePoint':
+	def from_pb_msg(cls, pb_msg: Any) -> 'ModuleA_SomePoint':
 		data = ModelBase.dict_from_pb_message(pb_msg)
 		return cls(**data).after_serialize_in()
 				   
-	def after_serialize_in(self) -> 'ModelSomePoint':
+	def after_serialize_in(self) -> 'ModuleA_SomePoint':
 		return self
 	
-	def clone(self) -> 'ModelSomePoint':
-		return ModelSomePoint.from_dict(self.to_dict())
+	def clone(self) -> 'ModuleA_SomePoint':
+		return ModuleA_SomePoint.from_dict(self.to_dict())
 	pass
 	
 ### message: module_a.BasicMessageA
-class ModelBasicMessageA(ModelBase):
-	CLASS_NAME = 'ModelBasicMessageA'
+class ModuleA_BasicMessageA(ModelBase):
+	CLASS_NAME = 'ModuleA_BasicMessageA'
 	
 	# protobuf names
 	PB_NAME = 'name'
@@ -234,10 +234,10 @@ class ModelBasicMessageA(ModelBase):
 	
 	# property enumValue
 	@property
-	def enumValue(self) -> Optional[ModelBasicEnum]:
+	def enumValue(self) -> Optional[ModuleA_BasicEnum]:
 		return self._enumValue
 	@enumValue.setter
-	def enumValue(self, value: Optional[ModelBasicEnum]):
+	def enumValue(self, value: Optional[ModuleA_BasicEnum]):
 		self._enumValue = value
 	
 	# property repeatedField
@@ -250,10 +250,10 @@ class ModelBasicMessageA(ModelBase):
 	
 	# property subItem
 	@property
-	def subItem(self) -> Optional[ModelBasicSubItem]:
+	def subItem(self) -> Optional[ModuleA_BasicSubItem]:
 		return self._subItem
 	@subItem.setter
-	def subItem(self, value: Optional[ModelBasicSubItem]):
+	def subItem(self, value: Optional[ModuleA_BasicSubItem]):
 		self._subItem = value
 	
 	# property oName
@@ -290,26 +290,26 @@ class ModelBasicMessageA(ModelBase):
 	
 	# property oEnumValue
 	@property
-	def oEnumValue(self) -> Optional[ModelBasicEnum]:
+	def oEnumValue(self) -> Optional[ModuleA_BasicEnum]:
 		return self._oEnumValue
 	@oEnumValue.setter
-	def oEnumValue(self, value: Optional[ModelBasicEnum]):
+	def oEnumValue(self, value: Optional[ModuleA_BasicEnum]):
 		self._oEnumValue = value
 	
-	# constructor - ModelBasicMessageA
+	# constructor - ModuleA_BasicMessageA
 	def __init__(self,
 			name: Optional[str] = None,
 			intValue: Optional[int] = None,
 			floatValue: Optional[float] = None,
 			boolValue: Optional[bool] = None,
-			enumValue: Optional[ModelBasicEnum] = None,
+			enumValue: Optional[ModuleA_BasicEnum] = None,
 			repeatedField: Optional[List[int]] = None,
-			subItem: Optional[ModelBasicSubItem] = None,
+			subItem: Optional[ModuleA_BasicSubItem] = None,
 			oName: Optional[str] = None,
 			oIntValue: Optional[int] = None,
 			oFloatValue: Optional[float] = None,
 			oBoolValue: Optional[bool] = None,
-			oEnumValue: Optional[ModelBasicEnum] = None,
+			oEnumValue: Optional[ModuleA_BasicEnum] = None,
 			):
 		self._name = name
 		self._intValue = intValue
@@ -327,31 +327,31 @@ class ModelBasicMessageA(ModelBase):
 	
 	# serialization
 	@classmethod
-	def from_dict(cls, data: dict) -> 'ModelBasicMessageA':
+	def from_dict(cls, data: dict) -> 'ModuleA_BasicMessageA':
 		return cls(**data).after_serialize_in()
 	
 	@classmethod
-	def from_pb_msg(cls, pb_msg: Any) -> 'ModelBasicMessageA':
+	def from_pb_msg(cls, pb_msg: Any) -> 'ModuleA_BasicMessageA':
 		data = ModelBase.dict_from_pb_message(pb_msg)
 		return cls(**data).after_serialize_in()
 				   
-	def after_serialize_in(self) -> 'ModelBasicMessageA':
+	def after_serialize_in(self) -> 'ModuleA_BasicMessageA':
 		if self.enumValue is not None:
-			self.enumValue = ModelBasicEnum(self.enumValue)
+			self.enumValue = ModuleA_BasicEnum(self.enumValue)
 		if self.oEnumValue is not None:
-			self.oEnumValue = ModelBasicEnum(self.oEnumValue)
+			self.oEnumValue = ModuleA_BasicEnum(self.oEnumValue)
 		if self.subItem is not None:
 			raw: Any = self.subItem
-			self.subItem = ModelBasicSubItem(**raw).after_serialize_in()
+			self.subItem = ModuleA_BasicSubItem(**raw).after_serialize_in()
 		return self
 	
-	def clone(self) -> 'ModelBasicMessageA':
-		return ModelBasicMessageA.from_dict(self.to_dict())
+	def clone(self) -> 'ModuleA_BasicMessageA':
+		return ModuleA_BasicMessageA.from_dict(self.to_dict())
 	pass
 	
 ### message: module_a.MsgWithRepeatedProps
-class ModelMsgWithRepeatedProps(ModelBase):
-	CLASS_NAME = 'ModelMsgWithRepeatedProps'
+class ModuleA_MsgWithRepeatedProps(ModelBase):
+	CLASS_NAME = 'ModuleA_MsgWithRepeatedProps'
 	
 	# protobuf names
 	PB_TXT = 'txt'
@@ -383,26 +383,26 @@ class ModelMsgWithRepeatedProps(ModelBase):
 	
 	# property enums
 	@property
-	def enums(self) -> Optional[List[ModelBasicEnum]]:
+	def enums(self) -> Optional[List[ModuleA_BasicEnum]]:
 		return self._enums
 	@enums.setter
-	def enums(self, value: Optional[List[ModelBasicEnum]]):
+	def enums(self, value: Optional[List[ModuleA_BasicEnum]]):
 		self._enums = value
 	
 	# property points
 	@property
-	def points(self) -> Optional[List[ModelSomePoint]]:
+	def points(self) -> Optional[List[ModuleA_SomePoint]]:
 		return self._points
 	@points.setter
-	def points(self, value: Optional[List[ModelSomePoint]]):
+	def points(self, value: Optional[List[ModuleA_SomePoint]]):
 		self._points = value
 	
-	# constructor - ModelMsgWithRepeatedProps
+	# constructor - ModuleA_MsgWithRepeatedProps
 	def __init__(self,
 			txt: Optional[str] = None,
 			lines: Optional[List[str]] = None,
-			enums: Optional[List[ModelBasicEnum]] = None,
-			points: Optional[List[ModelSomePoint]] = None,
+			enums: Optional[List[ModuleA_BasicEnum]] = None,
+			points: Optional[List[ModuleA_SomePoint]] = None,
 			):
 		self._txt = txt
 		self._lines = lines
@@ -412,30 +412,30 @@ class ModelMsgWithRepeatedProps(ModelBase):
 	
 	# serialization
 	@classmethod
-	def from_dict(cls, data: dict) -> 'ModelMsgWithRepeatedProps':
+	def from_dict(cls, data: dict) -> 'ModuleA_MsgWithRepeatedProps':
 		return cls(**data).after_serialize_in()
 	
 	@classmethod
-	def from_pb_msg(cls, pb_msg: Any) -> 'ModelMsgWithRepeatedProps':
+	def from_pb_msg(cls, pb_msg: Any) -> 'ModuleA_MsgWithRepeatedProps':
 		data = ModelBase.dict_from_pb_message(pb_msg)
 		return cls(**data).after_serialize_in()
 				   
-	def after_serialize_in(self) -> 'ModelMsgWithRepeatedProps':
+	def after_serialize_in(self) -> 'ModuleA_MsgWithRepeatedProps':
 		if self.enums is not None:
 			values = cast(List[str], self.enums) 
-			self.enums = [ModelBasicEnum(value) for value in values]
+			self.enums = [ModuleA_BasicEnum(value) for value in values]
 		if self.points is not None:
 			values = cast(List[Any], self.points) 
-			self.points = [ModelSomePoint(**value).after_serialize_in() for value in values]
+			self.points = [ModuleA_SomePoint(**value).after_serialize_in() for value in values]
 		return self
 	
-	def clone(self) -> 'ModelMsgWithRepeatedProps':
-		return ModelMsgWithRepeatedProps.from_dict(self.to_dict())
+	def clone(self) -> 'ModuleA_MsgWithRepeatedProps':
+		return ModuleA_MsgWithRepeatedProps.from_dict(self.to_dict())
 	pass
 	
 ### message: module_a.MsgWithOneOfProps
-class ModelMsgWithOneOfProps(ModelBase):
-	CLASS_NAME = 'ModelMsgWithOneOfProps'
+class ModuleA_MsgWithOneOfProps(ModelBase):
+	CLASS_NAME = 'ModuleA_MsgWithOneOfProps'
 	
 	# protobuf names
 	PB_TXT = 'txt'
@@ -457,27 +457,27 @@ class ModelMsgWithOneOfProps(ModelBase):
 	
 	# property pointA
 	@property
-	def pointA(self) -> Optional[ModelSomePoint]:
+	def pointA(self) -> Optional[ModuleA_SomePoint]:
 		return self._pointA
 	@pointA.setter
-	def pointA(self, value: Optional[ModelSomePoint]):
+	def pointA(self, value: Optional[ModuleA_SomePoint]):
 		self._pointA = value
 		self._pointB = None
 	
 	# property pointB
 	@property
-	def pointB(self) -> Optional[ModelSomePoint]:
+	def pointB(self) -> Optional[ModuleA_SomePoint]:
 		return self._pointB
 	@pointB.setter
-	def pointB(self, value: Optional[ModelSomePoint]):
+	def pointB(self, value: Optional[ModuleA_SomePoint]):
 		self._pointA = None
 		self._pointB = value
 	
-	# constructor - ModelMsgWithOneOfProps
+	# constructor - ModuleA_MsgWithOneOfProps
 	def __init__(self,
 			txt: Optional[str] = None,
-			pointA: Optional[ModelSomePoint] = None,
-			pointB: Optional[ModelSomePoint] = None,
+			pointA: Optional[ModuleA_SomePoint] = None,
+			pointB: Optional[ModuleA_SomePoint] = None,
 			):
 		self._txt = txt
 		self._pointA = pointA
@@ -486,30 +486,30 @@ class ModelMsgWithOneOfProps(ModelBase):
 	
 	# serialization
 	@classmethod
-	def from_dict(cls, data: dict) -> 'ModelMsgWithOneOfProps':
+	def from_dict(cls, data: dict) -> 'ModuleA_MsgWithOneOfProps':
 		return cls(**data).after_serialize_in()
 	
 	@classmethod
-	def from_pb_msg(cls, pb_msg: Any) -> 'ModelMsgWithOneOfProps':
+	def from_pb_msg(cls, pb_msg: Any) -> 'ModuleA_MsgWithOneOfProps':
 		data = ModelBase.dict_from_pb_message(pb_msg)
 		return cls(**data).after_serialize_in()
 				   
-	def after_serialize_in(self) -> 'ModelMsgWithOneOfProps':
+	def after_serialize_in(self) -> 'ModuleA_MsgWithOneOfProps':
 		if self.pointA is not None:
 			raw: Any = self.pointA
-			self.pointA = ModelSomePoint(**raw).after_serialize_in()
+			self.pointA = ModuleA_SomePoint(**raw).after_serialize_in()
 		if self.pointB is not None:
 			raw: Any = self.pointB
-			self.pointB = ModelSomePoint(**raw).after_serialize_in()
+			self.pointB = ModuleA_SomePoint(**raw).after_serialize_in()
 		return self
 	
-	def clone(self) -> 'ModelMsgWithOneOfProps':
-		return ModelMsgWithOneOfProps.from_dict(self.to_dict())
+	def clone(self) -> 'ModuleA_MsgWithOneOfProps':
+		return ModuleA_MsgWithOneOfProps.from_dict(self.to_dict())
 	pass
 	
 ### message: module_b.BasicMessageB
-class ModelBasicMessageB(ModelBase):
-	CLASS_NAME = 'ModelBasicMessageB'
+class ModuleB_BasicMessageB(ModelBase):
+	CLASS_NAME = 'ModuleB_BasicMessageB'
 	
 	# protobuf names
 	PB_NAME = 'name'
@@ -525,7 +525,7 @@ class ModelBasicMessageB(ModelBase):
 	def name(self, value: Optional[str]):
 		self._name = value
 	
-	# constructor - ModelBasicMessageB
+	# constructor - ModuleB_BasicMessageB
 	def __init__(self,
 			name: Optional[str] = None,
 			):
@@ -534,18 +534,18 @@ class ModelBasicMessageB(ModelBase):
 	
 	# serialization
 	@classmethod
-	def from_dict(cls, data: dict) -> 'ModelBasicMessageB':
+	def from_dict(cls, data: dict) -> 'ModuleB_BasicMessageB':
 		return cls(**data).after_serialize_in()
 	
 	@classmethod
-	def from_pb_msg(cls, pb_msg: Any) -> 'ModelBasicMessageB':
+	def from_pb_msg(cls, pb_msg: Any) -> 'ModuleB_BasicMessageB':
 		data = ModelBase.dict_from_pb_message(pb_msg)
 		return cls(**data).after_serialize_in()
 				   
-	def after_serialize_in(self) -> 'ModelBasicMessageB':
+	def after_serialize_in(self) -> 'ModuleB_BasicMessageB':
 		return self
 	
-	def clone(self) -> 'ModelBasicMessageB':
-		return ModelBasicMessageB.from_dict(self.to_dict())
+	def clone(self) -> 'ModuleB_BasicMessageB':
+		return ModuleB_BasicMessageB.from_dict(self.to_dict())
 	pass
 	
