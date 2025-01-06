@@ -14,7 +14,6 @@ class ImportWriter():
             'from google.protobuf.json_format import MessageToDict',
             'from typing import Optional, List, Any, cast',
             'import inspect',
-            'from dataclasses import dataclass, asdict',
             'from enum import Enum',
         )
         # additional import added to docs will be added here

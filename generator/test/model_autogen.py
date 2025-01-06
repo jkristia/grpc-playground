@@ -2,7 +2,6 @@ from __future__ import annotations
 from google.protobuf.json_format import MessageToDict
 from typing import Optional, List, Any, cast
 import inspect
-from dataclasses import dataclass, asdict
 from enum import Enum
 """
     auto generated file, model classes generated from protobuf classes
@@ -19,61 +18,44 @@ from enum import Enum
 MODEL_VERSION = '0.0.1'
 
 
-# @dataclass
 class ModelBase():
-    # def to_dict(self) -> Any:
-    #     return self._to_dict(asdict(self))
-    
-    # def _to_dict(self, obj) -> Any:
-    #     # return enum name, not value
-    #     if isinstance(obj, Enum):
-    #         return obj.name
-    #     # remove None values
-    #     if isinstance(obj, list):
-    #         return [self._to_dict(item) for item in obj if item is not None]
-    #     if isinstance(obj, dict):
-    #         return {key: self._to_dict(value) for key, value in obj.items() if value is not None }
-    #     else:
-    #         return obj
+	def to_dict(self) -> Any:
+		properties = [name for name, value in inspect.getmembers(self.__class__, inspect.isdatadescriptor)]
+		d = {}
+		for property in properties:
+			if property.startswith('__'):
+				continue
+			d[property] = getattr(self, property)
+		return self._to_dict(d)
+	
+	def _to_dict(self, obj) -> Any:
+		# return enum name, not value
+		if isinstance(obj, Enum):
+			return obj.name
+		if isinstance(obj, ModelBase) and obj != self:
+			return obj.to_dict()
+		# remove None values
+		if isinstance(obj, list):
+			return [self._to_dict(item) for item in obj if item is not None]
+		if isinstance(obj, dict):
+			return {key: self._to_dict(value) for key, value in obj.items() if value is not None }
+		else:
+			return obj
+		
+	def after_serialize_in(self) -> Any:
+		return self
+		
+	@classmethod
+	def dict_from_pb_message(cls, pb_msg: Any) -> dict:
+		return MessageToDict(pb_msg, always_print_fields_with_no_presence=True)
 
-    def to_dict(self) -> Any:
-        properties = [name for name, value in inspect.getmembers(self.__class__, inspect.isdatadescriptor)]
-        d = {}
-        for property in properties:
-            if property.startswith('__'):
-                continue
-            d[property] = getattr(self, property)
-        return self._to_dict(d)
-    
-    def _to_dict(self, obj) -> Any:
-        # return enum name, not value
-        if isinstance(obj, Enum):
-            return obj.name
-        if isinstance(obj, ModelBase) and obj != self:
-            return obj.to_dict()
-        # remove None values
-        if isinstance(obj, list):
-            return [self._to_dict(item) for item in obj if item is not None]
-        if isinstance(obj, dict):
-            return {key: self._to_dict(value) for key, value in obj.items() if value is not None }
-        else:
-            return obj
-        
-    def after_serialize_in(self) -> Any:
-        return self
-        
-    @classmethod
-    def dict_from_pb_message(cls, pb_msg: Any) -> dict:
-        return MessageToDict(pb_msg, always_print_fields_with_no_presence=True)
-
-                   
+				   
 class ModelBasicEnum(Enum):
 	UNKNOWN = 'UNKNOWN'
 	VALUE_1 = 'VALUE_1'
 	ABC = 'ABC'
 	LOWER_CASE_VALUE = 'lower_case_value'
 
-#@dataclass
 class ModelBasicSubItem(ModelBase):
 	CLASS_NAME = 'ModelBasicSubItem'
 	
@@ -85,7 +67,6 @@ class ModelBasicSubItem(ModelBase):
 	NAME = 'name'
 	SINGLEPOINT = 'singlePoint'
 	
-	# properties
 	# property name
 	@property
 	def name(self) -> Optional[str]:
@@ -102,6 +83,7 @@ class ModelBasicSubItem(ModelBase):
 	def singlePoint(self, value: Optional[ModelSomePoint]):
 		self._singlePoint = value
 	
+	# constructor - ModelBasicSubItem
 	def __init__(self,
 			name: Optional[str] = None,
 			singlePoint: Optional[ModelSomePoint] = None,
@@ -110,7 +92,7 @@ class ModelBasicSubItem(ModelBase):
 		self._singlePoint = singlePoint
 		pass
 	
-    # implementation
+	# serialization
 	@classmethod
 	def from_dict(cls, data: dict) -> 'ModelBasicSubItem':
 		return cls(**data).after_serialize_in()
@@ -119,7 +101,7 @@ class ModelBasicSubItem(ModelBase):
 	def from_pb_msg(cls, pb_msg: Any) -> 'ModelBasicSubItem':
 		data = ModelBase.dict_from_pb_message(pb_msg)
 		return cls(**data).after_serialize_in()
-                   
+				   
 	def after_serialize_in(self) -> 'ModelBasicSubItem':
 		if self.singlePoint is not None:
 			raw: Any = self.singlePoint
@@ -130,7 +112,6 @@ class ModelBasicSubItem(ModelBase):
 		return ModelBasicSubItem.from_dict(self.to_dict())
 	pass
 	
-#@dataclass
 class ModelSomePoint(ModelBase):
 	CLASS_NAME = 'ModelSomePoint'
 	
@@ -142,7 +123,6 @@ class ModelSomePoint(ModelBase):
 	X = 'x'
 	Y = 'y'
 	
-	# properties
 	# property x
 	@property
 	def x(self) -> Optional[float]:
@@ -159,6 +139,7 @@ class ModelSomePoint(ModelBase):
 	def y(self, value: Optional[float]):
 		self._y = value
 	
+	# constructor - ModelSomePoint
 	def __init__(self,
 			x: Optional[float] = None,
 			y: Optional[float] = None,
@@ -167,7 +148,7 @@ class ModelSomePoint(ModelBase):
 		self._y = y
 		pass
 	
-    # implementation
+	# serialization
 	@classmethod
 	def from_dict(cls, data: dict) -> 'ModelSomePoint':
 		return cls(**data).after_serialize_in()
@@ -176,7 +157,7 @@ class ModelSomePoint(ModelBase):
 	def from_pb_msg(cls, pb_msg: Any) -> 'ModelSomePoint':
 		data = ModelBase.dict_from_pb_message(pb_msg)
 		return cls(**data).after_serialize_in()
-                   
+				   
 	def after_serialize_in(self) -> 'ModelSomePoint':
 		return self
 	
@@ -184,7 +165,6 @@ class ModelSomePoint(ModelBase):
 		return ModelSomePoint.from_dict(self.to_dict())
 	pass
 	
-#@dataclass
 class ModelBasicMessageA(ModelBase):
 	CLASS_NAME = 'ModelBasicMessageA'
 	
@@ -216,7 +196,6 @@ class ModelBasicMessageA(ModelBase):
 	O_BOOL_VALUE = 'oBoolValue'
 	O_ENUM_VALUE = 'oEnumValue'
 	
-	# properties
 	# property name
 	@property
 	def name(self) -> Optional[str]:
@@ -313,6 +292,7 @@ class ModelBasicMessageA(ModelBase):
 	def oEnumValue(self, value: Optional[ModelBasicEnum]):
 		self._oEnumValue = value
 	
+	# constructor - ModelBasicMessageA
 	def __init__(self,
 			name: Optional[str] = None,
 			intValue: Optional[int] = None,
@@ -341,7 +321,7 @@ class ModelBasicMessageA(ModelBase):
 		self._oEnumValue = oEnumValue
 		pass
 	
-    # implementation
+	# serialization
 	@classmethod
 	def from_dict(cls, data: dict) -> 'ModelBasicMessageA':
 		return cls(**data).after_serialize_in()
@@ -350,7 +330,7 @@ class ModelBasicMessageA(ModelBase):
 	def from_pb_msg(cls, pb_msg: Any) -> 'ModelBasicMessageA':
 		data = ModelBase.dict_from_pb_message(pb_msg)
 		return cls(**data).after_serialize_in()
-                   
+				   
 	def after_serialize_in(self) -> 'ModelBasicMessageA':
 		if self.enumValue is not None:
 			self.enumValue = ModelBasicEnum(self.enumValue)
@@ -365,7 +345,6 @@ class ModelBasicMessageA(ModelBase):
 		return ModelBasicMessageA.from_dict(self.to_dict())
 	pass
 	
-#@dataclass
 class ModelMsgWithRepeatedProps(ModelBase):
 	CLASS_NAME = 'ModelMsgWithRepeatedProps'
 	
@@ -381,7 +360,6 @@ class ModelMsgWithRepeatedProps(ModelBase):
 	ENUMS = 'enums'
 	POINTS = 'points'
 	
-	# properties
 	# property txt
 	@property
 	def txt(self) -> Optional[str]:
@@ -414,6 +392,7 @@ class ModelMsgWithRepeatedProps(ModelBase):
 	def points(self, value: Optional[List[ModelSomePoint]]):
 		self._points = value
 	
+	# constructor - ModelMsgWithRepeatedProps
 	def __init__(self,
 			txt: Optional[str] = None,
 			lines: Optional[List[str]] = None,
@@ -426,7 +405,7 @@ class ModelMsgWithRepeatedProps(ModelBase):
 		self._points = points
 		pass
 	
-    # implementation
+	# serialization
 	@classmethod
 	def from_dict(cls, data: dict) -> 'ModelMsgWithRepeatedProps':
 		return cls(**data).after_serialize_in()
@@ -435,7 +414,7 @@ class ModelMsgWithRepeatedProps(ModelBase):
 	def from_pb_msg(cls, pb_msg: Any) -> 'ModelMsgWithRepeatedProps':
 		data = ModelBase.dict_from_pb_message(pb_msg)
 		return cls(**data).after_serialize_in()
-                   
+				   
 	def after_serialize_in(self) -> 'ModelMsgWithRepeatedProps':
 		if self.enums is not None:
 			values = cast(List[str], self.enums) 
@@ -449,7 +428,6 @@ class ModelMsgWithRepeatedProps(ModelBase):
 		return ModelMsgWithRepeatedProps.from_dict(self.to_dict())
 	pass
 	
-#@dataclass
 class ModelMsgWithOneOfProps(ModelBase):
 	CLASS_NAME = 'ModelMsgWithOneOfProps'
 	
@@ -463,7 +441,6 @@ class ModelMsgWithOneOfProps(ModelBase):
 	POINT_A = 'pointA'
 	POINT_B = 'pointB'
 	
-	# properties
 	# property txt
 	@property
 	def txt(self) -> Optional[str]:
@@ -490,6 +467,7 @@ class ModelMsgWithOneOfProps(ModelBase):
 		self._pointA = None
 		self._pointB = value
 	
+	# constructor - ModelMsgWithOneOfProps
 	def __init__(self,
 			txt: Optional[str] = None,
 			pointA: Optional[ModelSomePoint] = None,
@@ -500,7 +478,7 @@ class ModelMsgWithOneOfProps(ModelBase):
 		self._pointB = pointB
 		pass
 	
-    # implementation
+	# serialization
 	@classmethod
 	def from_dict(cls, data: dict) -> 'ModelMsgWithOneOfProps':
 		return cls(**data).after_serialize_in()
@@ -509,7 +487,7 @@ class ModelMsgWithOneOfProps(ModelBase):
 	def from_pb_msg(cls, pb_msg: Any) -> 'ModelMsgWithOneOfProps':
 		data = ModelBase.dict_from_pb_message(pb_msg)
 		return cls(**data).after_serialize_in()
-                   
+				   
 	def after_serialize_in(self) -> 'ModelMsgWithOneOfProps':
 		if self.pointA is not None:
 			raw: Any = self.pointA
@@ -523,7 +501,6 @@ class ModelMsgWithOneOfProps(ModelBase):
 		return ModelMsgWithOneOfProps.from_dict(self.to_dict())
 	pass
 	
-#@dataclass
 class ModelBasicMessageB(ModelBase):
 	CLASS_NAME = 'ModelBasicMessageB'
 	
@@ -533,7 +510,6 @@ class ModelBasicMessageB(ModelBase):
 	# json / dict names
 	NAME = 'name'
 	
-	# properties
 	# property name
 	@property
 	def name(self) -> Optional[str]:
@@ -542,13 +518,14 @@ class ModelBasicMessageB(ModelBase):
 	def name(self, value: Optional[str]):
 		self._name = value
 	
+	# constructor - ModelBasicMessageB
 	def __init__(self,
 			name: Optional[str] = None,
 			):
 		self._name = name
 		pass
 	
-    # implementation
+	# serialization
 	@classmethod
 	def from_dict(cls, data: dict) -> 'ModelBasicMessageB':
 		return cls(**data).after_serialize_in()
@@ -557,7 +534,7 @@ class ModelBasicMessageB(ModelBase):
 	def from_pb_msg(cls, pb_msg: Any) -> 'ModelBasicMessageB':
 		data = ModelBase.dict_from_pb_message(pb_msg)
 		return cls(**data).after_serialize_in()
-                   
+				   
 	def after_serialize_in(self) -> 'ModelBasicMessageB':
 		return self
 	
