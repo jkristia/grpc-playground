@@ -10,6 +10,7 @@ class BaseClassWriter():
 	
 	def write(self, wr: StringWriter) -> StringWriter:
 		self._write_baseclass(wr)
+		self._write_titmestamp(wr)
 		return wr
 	
 	def _write_baseclass(self, wr:StringWriter) -> StringWriter:
@@ -35,6 +36,8 @@ class {self._doc.baseclass_name}():
 			return [self._to_dict(item) for item in obj if item is not None]
 		if isinstance(obj, dict):
 			return {{key: self._to_dict(value) for key, value in obj.items() if value is not None }}
+		if isinstance(obj, Google_Timestamp) and obj != self:
+			return obj.time
 		else:
 			return obj
 		
@@ -45,5 +48,15 @@ class {self._doc.baseclass_name}():
 	def dict_from_pb_message(cls, pb_msg: Any) -> dict:
 		return MessageToDict(pb_msg, always_print_fields_with_no_presence=True)
 
+""")
+		return wr
+
+	def _write_titmestamp(self, wr:StringWriter) -> StringWriter:
+		wr.writeln(f"""
+class Google_Timestamp():
+
+	def __init__(self, time: str):
+		self.time: str = time
+	
 """)
 		return wr

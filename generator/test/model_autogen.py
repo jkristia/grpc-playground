@@ -39,6 +39,8 @@ class ModelBase():
 			return [self._to_dict(item) for item in obj if item is not None]
 		if isinstance(obj, dict):
 			return {key: self._to_dict(value) for key, value in obj.items() if value is not None }
+		if isinstance(obj, Google_Timestamp) and obj != self:
+			return obj.time
 		else:
 			return obj
 		
@@ -49,6 +51,13 @@ class ModelBase():
 	def dict_from_pb_message(cls, pb_msg: Any) -> dict:
 		return MessageToDict(pb_msg, always_print_fields_with_no_presence=True)
 
+
+
+class Google_Timestamp():
+
+	def __init__(self, time: str):
+		self.time: str = time
+	
 
 ### enum: module_a.BasicEnum
 class ModuleA_BasicEnum(Enum):
@@ -582,6 +591,63 @@ class ModuleA_MsgWithSet(ModelBase):
 	
 	def clone(self) -> 'ModuleA_MsgWithSet':
 		return ModuleA_MsgWithSet.from_dict(self.to_dict())
+	pass
+	
+### message: module_a.MsgWithTimestamp
+class ModuleA_MsgWithTimestamp(ModelBase):
+	CLASS_NAME = 'ModuleA_MsgWithTimestamp'
+	
+	# protobuf names
+	PB_SOME_TIMESTAMP = 'some_timestamp'
+	PB_SOME_VALUE = 'some_value'
+	
+	# json / dict names
+	SOME_TIMESTAMP = 'someTimestamp'
+	SOME_VALUE = 'someValue'
+	
+	# property someTimestamp
+	@property
+	def someTimestamp(self) -> Optional[Google_Timestamp]:
+		return self._someTimestamp
+	@someTimestamp.setter
+	def someTimestamp(self, value: Optional[Google_Timestamp]):
+		self._someTimestamp = value
+	
+	# property someValue
+	@property
+	def someValue(self) -> Optional[int]:
+		return self._someValue
+	@someValue.setter
+	def someValue(self, value: Optional[int]):
+		self._someValue = value
+	
+	# constructor - ModuleA_MsgWithTimestamp
+	def __init__(self,
+			someTimestamp: Optional[Google_Timestamp] = None,
+			someValue: Optional[int] = None,
+			):
+		self._someTimestamp = someTimestamp
+		self._someValue = someValue
+		pass
+	
+	# serialization
+	@classmethod
+	def from_dict(cls, data: dict) -> 'ModuleA_MsgWithTimestamp':
+		return cls(**data).after_serialize_in()
+	
+	@classmethod
+	def from_pb_msg(cls, pb_msg: Any) -> 'ModuleA_MsgWithTimestamp':
+		data = ModelBase.dict_from_pb_message(pb_msg)
+		return cls(**data).after_serialize_in()
+				   
+	def after_serialize_in(self) -> 'ModuleA_MsgWithTimestamp':
+		if self.someTimestamp is not None:
+			raw: Any = self.someTimestamp
+			self.someTimestamp = Google_Timestamp(raw)
+		return self
+	
+	def clone(self) -> 'ModuleA_MsgWithTimestamp':
+		return ModuleA_MsgWithTimestamp.from_dict(self.to_dict())
 	pass
 	
 ### message: module_b.ItemB

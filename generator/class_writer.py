@@ -96,6 +96,10 @@ class ClassWriter():
 			if field.is_map:
 				self._write_map_initialize(wr, field)
 				continue
+			if field.is_timestamp:
+				wr.writeln(f'raw: Any = self.{field.json_name}')
+				wr.writeln(f'self.{field.json_name} = {field.object_type}(raw)').pop_indent()
+				continue
 			if field.is_repeated:
 				wr.writeln(f'values = cast(List[Any], self.{field.json_name}) ')
 				wr.writeln(f'self.{field.json_name} = [{field.object_type}(**value).after_serialize_in() for value in values]').pop_indent()

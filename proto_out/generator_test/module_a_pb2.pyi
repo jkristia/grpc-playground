@@ -10,6 +10,7 @@ import google.protobuf.descriptor
 import google.protobuf.internal.containers
 import google.protobuf.internal.enum_type_wrapper
 import google.protobuf.message
+import google.protobuf.timestamp_pb2
 import sys
 import typing
 
@@ -248,3 +249,23 @@ class MsgWithSet(google.protobuf.message.Message):
     def ClearField(self, field_name: typing.Literal["a_string_map", b"a_string_map", "item", b"item", "items_map", b"items_map"]) -> None: ...
 
 global___MsgWithSet = MsgWithSet
+
+@typing.final
+class MsgWithTimestamp(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    SOME_TIMESTAMP_FIELD_NUMBER: builtins.int
+    SOME_VALUE_FIELD_NUMBER: builtins.int
+    some_value: builtins.int
+    @property
+    def some_timestamp(self) -> google.protobuf.timestamp_pb2.Timestamp: ...
+    def __init__(
+        self,
+        *,
+        some_timestamp: google.protobuf.timestamp_pb2.Timestamp | None = ...,
+        some_value: builtins.int = ...,
+    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["some_timestamp", b"some_timestamp"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["some_timestamp", b"some_timestamp", "some_value", b"some_value"]) -> None: ...
+
+global___MsgWithTimestamp = MsgWithTimestamp

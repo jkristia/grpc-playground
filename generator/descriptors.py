@@ -137,6 +137,10 @@ class ModelFieldDescriptor():
         if self.descriptor.message_type and self.descriptor.message_type.GetOptions().map_entry == True:
             return True
         return False
+    
+    @property
+    def is_timestamp(self) -> bool:
+        return self.object_type.lower().endswith('timestamp')
 
     def __init__(self, doc: ModelGeneratorDoc, descriptor: FieldDescriptor):
         self.descriptor = descriptor

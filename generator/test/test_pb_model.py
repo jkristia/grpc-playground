@@ -1,9 +1,11 @@
 from typing import Any, cast
 import unittest
-from google.protobuf.json_format import MessageToDict
+import datetime
+from google.protobuf.timestamp_pb2 import Timestamp
+from google.protobuf.json_format import MessageToDict, ParseDict
 from generator_test import module_a_pb2, module_b_pb2
 from descriptors import FieldType, ModelFieldDescriptor, ModelGeneratorDoc, ModelModuleDescriptor, ModelMessageDescriptor 
-from model_autogen import ModelBase, ModuleA_BasicMessageA, ModuleA_BasicEnum, ModuleA_BasicSubItem, ModuleA_MsgWithOneOfProps, ModuleA_MsgWithRepeatedProps, ModuleA_MsgWithSet, ModuleA_SomePoint, ModuleB_ItemB
+from model_autogen import Google_Timestamp, ModelBase, ModuleA_BasicMessageA, ModuleA_BasicEnum, ModuleA_BasicSubItem, ModuleA_MsgWithOneOfProps, ModuleA_MsgWithRepeatedProps, ModuleA_MsgWithSet, ModuleA_SomePoint, ModuleB_ItemB, ModuleA_MsgWithTimestamp
 
 class TestPb2Model(unittest.TestCase):
     
@@ -169,3 +171,30 @@ class TestPb2Model(unittest.TestCase):
         assert msg.itemsMap['44'].id == 44
         assert isinstance(msg.itemsMap['55'], ModuleB_ItemB)
         assert msg.itemsMap['55'].id == 55
+
+    def test_timestamp(self):
+
+        pb_msg = module_a_pb2.MsgWithTimestamp(
+            some_value=123,
+            some_timestamp=Timestamp(seconds=10203040, nanos=456)
+        )
+        data = ModelBase.dict_from_pb_message(pb_msg)
+        msg = ModuleA_MsgWithTimestamp.from_pb_msg(pb_msg)
+        assert msg.someValue == 123
+        assert isinstance(msg.someTimestamp, Google_Timestamp)
+        assert msg.someTimestamp.time == '1970-04-29T02:10:40.000000456Z'
+        data = msg.to_dict()
+        print(data)
+        assert data['someTimestamp'] == '1970-04-29T02:10:40.000000456Z'
+        clone = msg.clone()
+        assert clone.someTimestamp
+        assert clone.someTimestamp.time == '1970-04-29T02:10:40.000000456Z'
+
+        pb_msg_2 = module_a_pb2.MsgWithTimestamp()
+        ParseDict(msg.to_dict(), pb_msg_2)
+        assert pb_msg_2.some_value == 123
+        assert pb_msg_2.some_timestamp.ToJsonString() == '1970-04-29T02:10:40.000000456Z'
+
+
+
+

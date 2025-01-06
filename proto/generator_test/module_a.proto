@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package module_a;
+import "google/protobuf/timestamp.proto";
 import "generator_test/module_b.proto";
 
 enum BasicEnum {
@@ -55,4 +56,9 @@ message MsgWithSet {
     module_b.ItemB item = 1;
     map<string, string> a_string_map = 2;
     map<string, module_b.ItemB> items_map = 3;
+}
+
+message MsgWithTimestamp {
+    google.protobuf.Timestamp some_timestamp = 1;
+    int32 some_value = 2;
 }
