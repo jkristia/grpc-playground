@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package module_a;
+import "generator_test/module_b.proto";
 
 enum BasicEnum {
     UNKNOWN = 0;
@@ -48,4 +49,10 @@ message MsgWithOneOfProps {
         SomePoint point_a = 10;
         SomePoint point_b = 11;
     }
+}
+
+message MsgWithSet {
+    module_b.ItemB item = 1;
+    map<string, string> a_string_map = 2;
+    map<string, module_b.ItemB> items_map = 3;
 }

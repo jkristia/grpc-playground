@@ -6,12 +6,13 @@ class FieldWriter():
     @property
     def property_type(self) -> str:
         field = self._field_descriptor
+        if field.is_map:
+            return f'Optional[Dict[{field.map_key_type}, {field.map_value_type}]]'
         property_type = field.property_type.value
         if field.property_type == FieldType.cls:
             property_type = field.object_type
         if field.property_type == FieldType.enum:
             property_type = field.object_type
-            
         type = f'Optional[{property_type}]'
         if (field.is_repeated):
             type = f'Optional[List[{property_type}]]'

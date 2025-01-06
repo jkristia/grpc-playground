@@ -45,5 +45,5 @@ class {self._doc.baseclass_name}():
 	def dict_from_pb_message(cls, pb_msg: Any) -> dict:
 		return MessageToDict(pb_msg, always_print_fields_with_no_presence=True)
 
-				   """)
+""")
 		return wr

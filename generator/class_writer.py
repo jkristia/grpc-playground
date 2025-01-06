@@ -1,5 +1,5 @@
 
-from descriptors import ModelGeneratorDoc, ModelMessageDescriptor, FieldType
+from descriptors import ModelFieldDescriptor, ModelGeneratorDoc, ModelMessageDescriptor, FieldType
 from field_writer import FieldWriter
 from string_writer import StringWriter
 
@@ -93,6 +93,9 @@ class ClassWriter():
 		fields = [field for field in self._descriptor.fields if field.property_type == FieldType.cls]
 		for field in fields:
 			wr.writeln(f'if self.{field.json_name} is not None:').indent()
+			if field.is_map:
+				self._write_map_initialize(wr, field)
+				continue
 			if field.is_repeated:
 				wr.writeln(f'values = cast(List[Any], self.{field.json_name}) ')
 				wr.writeln(f'self.{field.json_name} = [{field.object_type}(**value).after_serialize_in() for value in values]').pop_indent()
@@ -102,6 +105,19 @@ class ClassWriter():
 
 		wr.writeln('return self')
 		wr.pop_indent()
+
+	def _write_map_initialize(self, wr: StringWriter, field: ModelFieldDescriptor):
+		if field.is_map_value_type_class:
+			wr.writeln('newmap = {}')
+			wr.writeln(f'for key, value in self.{field.json_name}.items():').indent()
+			wr.writeln('raw: Any = value')
+			wr.writeln(f'newmap[key] = {field.map_value_type}(**raw).after_serialize_in()')
+			wr.pop_indent()
+			wr.writeln(f'self.{field.json_name} = newmap')
+			wr.pop_indent()
+			return
+		wr.writeln('pass').pop_indent()
+		pass
 		
 	def _write_end(self, wr: StringWriter):
 		wr.writeln('pass')

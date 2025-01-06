@@ -3,7 +3,7 @@ import unittest
 from google.protobuf.json_format import MessageToDict
 from generator_test import module_a_pb2, module_b_pb2
 from descriptors import FieldType, ModelFieldDescriptor, ModelGeneratorDoc, ModelModuleDescriptor, ModelMessageDescriptor 
-from model_autogen import ModelBase, ModuleA_BasicMessageA, ModuleA_BasicEnum, ModuleA_BasicSubItem, ModuleA_MsgWithOneOfProps, ModuleA_MsgWithRepeatedProps, ModuleA_SomePoint
+from model_autogen import ModelBase, ModuleA_BasicMessageA, ModuleA_BasicEnum, ModuleA_BasicSubItem, ModuleA_MsgWithOneOfProps, ModuleA_MsgWithRepeatedProps, ModuleA_MsgWithSet, ModuleA_SomePoint, ModuleB_ItemB
 
 class TestPb2Model(unittest.TestCase):
     
@@ -152,3 +152,20 @@ class TestPb2Model(unittest.TestCase):
         assert msg.pointB == None
         assert msg.pointA.x == 5
 
+    def test_map(self):
+        pb_msg = module_a_pb2.MsgWithSet(
+            a_string_map={'a': '123', 'b': '456'},
+            items_map={
+                '44': module_b_pb2.ItemB(id=44),
+                '55': module_b_pb2.ItemB(id=55),
+            }
+        )
+        msg = ModuleA_MsgWithSet.from_pb_msg(pb_msg)
+        assert msg._aStringMap == {'a': '123', 'b': '456'}
+        assert msg.item == None
+        assert msg.itemsMap is not None
+        assert len(msg.itemsMap.values()) == 2
+        assert isinstance(msg.itemsMap['44'], ModuleB_ItemB)
+        assert msg.itemsMap['44'].id == 44
+        assert isinstance(msg.itemsMap['55'], ModuleB_ItemB)
+        assert msg.itemsMap['55'].id == 55

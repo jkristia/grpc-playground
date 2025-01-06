@@ -1,6 +1,6 @@
 from __future__ import annotations
 from google.protobuf.json_format import MessageToDict
-from typing import Optional, List, Any, cast
+from typing import Optional, List, Dict, Any, cast
 import inspect
 from enum import Enum
 """
@@ -49,7 +49,7 @@ class ModelBase():
 	def dict_from_pb_message(cls, pb_msg: Any) -> dict:
 		return MessageToDict(pb_msg, always_print_fields_with_no_presence=True)
 
-				   
+
 ### enum: module_a.BasicEnum
 class ModuleA_BasicEnum(Enum):
 	UNKNOWN = 'UNKNOWN'
@@ -505,6 +505,125 @@ class ModuleA_MsgWithOneOfProps(ModelBase):
 	
 	def clone(self) -> 'ModuleA_MsgWithOneOfProps':
 		return ModuleA_MsgWithOneOfProps.from_dict(self.to_dict())
+	pass
+	
+### message: module_a.MsgWithSet
+class ModuleA_MsgWithSet(ModelBase):
+	CLASS_NAME = 'ModuleA_MsgWithSet'
+	
+	# protobuf names
+	PB_ITEM = 'item'
+	PB_A_STRING_MAP = 'a_string_map'
+	PB_ITEMS_MAP = 'items_map'
+	
+	# json / dict names
+	ITEM = 'item'
+	A_STRING_MAP = 'aStringMap'
+	ITEMS_MAP = 'itemsMap'
+	
+	# property item
+	@property
+	def item(self) -> Optional[ModuleB_ItemB]:
+		return self._item
+	@item.setter
+	def item(self, value: Optional[ModuleB_ItemB]):
+		self._item = value
+	
+	# property aStringMap
+	@property
+	def aStringMap(self) -> Optional[Dict[str, str]]:
+		return self._aStringMap
+	@aStringMap.setter
+	def aStringMap(self, value: Optional[Dict[str, str]]):
+		self._aStringMap = value
+	
+	# property itemsMap
+	@property
+	def itemsMap(self) -> Optional[Dict[str, ModuleB_ItemB]]:
+		return self._itemsMap
+	@itemsMap.setter
+	def itemsMap(self, value: Optional[Dict[str, ModuleB_ItemB]]):
+		self._itemsMap = value
+	
+	# constructor - ModuleA_MsgWithSet
+	def __init__(self,
+			item: Optional[ModuleB_ItemB] = None,
+			aStringMap: Optional[Dict[str, str]] = None,
+			itemsMap: Optional[Dict[str, ModuleB_ItemB]] = None,
+			):
+		self._item = item
+		self._aStringMap = aStringMap
+		self._itemsMap = itemsMap
+		pass
+	
+	# serialization
+	@classmethod
+	def from_dict(cls, data: dict) -> 'ModuleA_MsgWithSet':
+		return cls(**data).after_serialize_in()
+	
+	@classmethod
+	def from_pb_msg(cls, pb_msg: Any) -> 'ModuleA_MsgWithSet':
+		data = ModelBase.dict_from_pb_message(pb_msg)
+		return cls(**data).after_serialize_in()
+				   
+	def after_serialize_in(self) -> 'ModuleA_MsgWithSet':
+		if self.item is not None:
+			raw: Any = self.item
+			self.item = ModuleB_ItemB(**raw).after_serialize_in()
+		if self.aStringMap is not None:
+			pass
+		if self.itemsMap is not None:
+			newmap = {}
+			for key, value in self.itemsMap.items():
+				raw: Any = value
+				newmap[key] = ModuleB_ItemB(**raw).after_serialize_in()
+			self.itemsMap = newmap
+		return self
+	
+	def clone(self) -> 'ModuleA_MsgWithSet':
+		return ModuleA_MsgWithSet.from_dict(self.to_dict())
+	pass
+	
+### message: module_b.ItemB
+class ModuleB_ItemB(ModelBase):
+	CLASS_NAME = 'ModuleB_ItemB'
+	
+	# protobuf names
+	PB_ID = 'id'
+	
+	# json / dict names
+	ID = 'id'
+	
+	# property id
+	@property
+	def id(self) -> Optional[int]:
+		return self._id
+	@id.setter
+	def id(self, value: Optional[int]):
+		self._id = value
+	
+	# constructor - ModuleB_ItemB
+	def __init__(self,
+			id: Optional[int] = None,
+			):
+		self._id = id
+		pass
+	
+	# serialization
+	@classmethod
+	def from_dict(cls, data: dict) -> 'ModuleB_ItemB':
+		return cls(**data).after_serialize_in()
+	
+	@classmethod
+	def from_pb_msg(cls, pb_msg: Any) -> 'ModuleB_ItemB':
+		data = ModelBase.dict_from_pb_message(pb_msg)
+		return cls(**data).after_serialize_in()
+				   
+	def after_serialize_in(self) -> 'ModuleB_ItemB':
+		return self
+	
+	def clone(self) -> 'ModuleB_ItemB':
+		return ModuleB_ItemB.from_dict(self.to_dict())
 	pass
 	
 ### message: module_b.BasicMessageB

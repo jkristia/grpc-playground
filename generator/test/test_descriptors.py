@@ -113,7 +113,23 @@ class TestDescriptors(unittest.TestCase):
         assert field.json_name == 'oEnumValue'
         assert field.property_type == FieldType.enum
         assert field.is_optional == True
-        
+
+    def test_map_field(self):
+        doc = self.doc
+        module = cast(ModelModuleDescriptor, doc.find_module('module_a'))
+        message = cast(ModelMessageDescriptor, module.find_message('MsgWithSet'))
+        field = cast(ModelFieldDescriptor, message.find_field('aStringMap'))
+        assert field.is_map == True
+        assert field.map_key_type == 'str'
+        assert field.map_value_type == 'str'
+        assert field.is_map_value_type_class == False
+        field = cast(ModelFieldDescriptor, message.find_field('itemsMap'))
+        assert field.is_map == True
+        assert field.map_key_type == 'str'
+        assert field.map_value_type == 'ModelXyzModuleB_ItemB'
+        assert field.is_map_value_type_class == True
+
+
     def test_enums(self):
         doc = self.doc
         module = cast(ModelModuleDescriptor, doc.find_module('module_a'))

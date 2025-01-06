@@ -87,7 +87,31 @@ class ModelFieldDescriptor():
             return self.doc.model_prefix + format_class_name(self.descriptor.enum_type.full_name)
             # return self.descriptor.message_type.full_name
         return ''
+    @property
+    def map_key_type(self) -> str:
+        key_type: FieldDescriptor = self.descriptor.message_type.fields_by_name['key']
+        if key_type.type == key_type.TYPE_STRING:
+            return 'str'
+        if key_type.type == key_type.TYPE_INT32:
+            return 'int'
+        return 'Any'
+
+    @property
+    def map_value_type(self) -> str:
+        value_descriptor: FieldDescriptor = self.descriptor.message_type.fields_by_name['value']
+        value_type = map_field_type(value_descriptor.type)
+        if value_type == FieldType.cls:
+            return ModelFieldDescriptor(self.doc, value_descriptor).object_type
+        if isinstance(value_type, str):
+            return value_type
+        return value_type.value
     
+    @property
+    def is_map_value_type_class(self) -> bool:
+        value_type: FieldDescriptor = self.descriptor.message_type.fields_by_name['value']
+        t = map_field_type(value_type.type)
+        return (isinstance(t, FieldType)) and (t == FieldType.cls)
+
     @property
     def is_optional(self) -> bool:
         # all fields are optional in proto3
@@ -107,6 +131,12 @@ class ModelFieldDescriptor():
         if self.is_oneof and len(oneof.fields) > 1:
             return [f.json_name for f in oneof.fields]
         return [];
+
+    @property
+    def is_map(self) -> bool:
+        if self.descriptor.message_type and self.descriptor.message_type.GetOptions().map_entry == True:
+            return True
+        return False
 
     def __init__(self, doc: ModelGeneratorDoc, descriptor: FieldDescriptor):
         self.descriptor = descriptor

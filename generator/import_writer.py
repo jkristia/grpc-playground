@@ -12,7 +12,7 @@ class ImportWriter():
         wr.writeln(
             'from __future__ import annotations', # use forward delcare as the order of definitions is not guarenteed
             'from google.protobuf.json_format import MessageToDict',
-            'from typing import Optional, List, Any, cast',
+            'from typing import Optional, List, Dict, Any, cast',
             'import inspect',
             'from enum import Enum',
         )

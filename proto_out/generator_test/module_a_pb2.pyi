@@ -5,6 +5,7 @@ isort:skip_file
 
 import builtins
 import collections.abc
+import generator_test.module_b_pb2
 import google.protobuf.descriptor
 import google.protobuf.internal.containers
 import google.protobuf.internal.enum_type_wrapper
@@ -188,3 +189,62 @@ class MsgWithOneOfProps(google.protobuf.message.Message):
     def WhichOneof(self, oneof_group: typing.Literal["pointAorB", b"pointAorB"]) -> typing.Literal["point_a", "point_b"] | None: ...
 
 global___MsgWithOneOfProps = MsgWithOneOfProps
+
+@typing.final
+class MsgWithSet(google.protobuf.message.Message):
+    DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+    @typing.final
+    class AStringMapEntry(google.protobuf.message.Message):
+        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+        KEY_FIELD_NUMBER: builtins.int
+        VALUE_FIELD_NUMBER: builtins.int
+        key: builtins.str
+        value: builtins.str
+        def __init__(
+            self,
+            *,
+            key: builtins.str = ...,
+            value: builtins.str = ...,
+        ) -> None: ...
+        def ClearField(self, field_name: typing.Literal["key", b"key", "value", b"value"]) -> None: ...
+
+    @typing.final
+    class ItemsMapEntry(google.protobuf.message.Message):
+        DESCRIPTOR: google.protobuf.descriptor.Descriptor
+
+        KEY_FIELD_NUMBER: builtins.int
+        VALUE_FIELD_NUMBER: builtins.int
+        key: builtins.str
+        @property
+        def value(self) -> generator_test.module_b_pb2.ItemB: ...
+        def __init__(
+            self,
+            *,
+            key: builtins.str = ...,
+            value: generator_test.module_b_pb2.ItemB | None = ...,
+        ) -> None: ...
+        def HasField(self, field_name: typing.Literal["value", b"value"]) -> builtins.bool: ...
+        def ClearField(self, field_name: typing.Literal["key", b"key", "value", b"value"]) -> None: ...
+
+    ITEM_FIELD_NUMBER: builtins.int
+    A_STRING_MAP_FIELD_NUMBER: builtins.int
+    ITEMS_MAP_FIELD_NUMBER: builtins.int
+    @property
+    def item(self) -> generator_test.module_b_pb2.ItemB: ...
+    @property
+    def a_string_map(self) -> google.protobuf.internal.containers.ScalarMap[builtins.str, builtins.str]: ...
+    @property
+    def items_map(self) -> google.protobuf.internal.containers.MessageMap[builtins.str, generator_test.module_b_pb2.ItemB]: ...
+    def __init__(
+        self,
+        *,
+        item: generator_test.module_b_pb2.ItemB | None = ...,
+        a_string_map: collections.abc.Mapping[builtins.str, builtins.str] | None = ...,
+        items_map: collections.abc.Mapping[builtins.str, generator_test.module_b_pb2.ItemB] | None = ...,
+    ) -> None: ...
+    def HasField(self, field_name: typing.Literal["item", b"item"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing.Literal["a_string_map", b"a_string_map", "item", b"item", "items_map", b"items_map"]) -> None: ...
+
+global___MsgWithSet = MsgWithSet
