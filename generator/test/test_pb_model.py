@@ -144,4 +144,11 @@ class TestPb2Model(unittest.TestCase):
             point_b=module_a_pb2.SomePoint(x=3, y=4),
         )
         msg = ModelMsgWithOneOfProps.from_pb_msg(pb_msg)
-        print(msg)
+        assert msg.pointA == None
+        assert msg.pointB != None
+        assert msg.pointB.x == 3
+        msg.pointA = ModelSomePoint(x=5, y=6)
+        assert msg.pointA != None
+        assert msg.pointB == None
+        assert msg.pointA.x == 5
+

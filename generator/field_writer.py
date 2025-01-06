@@ -1,4 +1,3 @@
-
 from descriptors import ModelFieldDescriptor, ModelGeneratorDoc, ModelMessageDescriptor, FieldType
 from string_writer import StringWriter
 
@@ -36,19 +35,22 @@ class FieldWriter():
         field = self._field_descriptor
         type = self.property_type
         
-        # type = f'Optional[{property_type}]'
-        # if (field.is_repeated):
-        #     type = f'Optional[List[{property_type}]]'
-        # wr.writeln(f'{field.json_name}: {type} = None')
-        
         wr.writeln(f'# property {field.json_name}')
-        # wr.writeln(f'_{field.json_name}: {type} = None')
         wr.writeln(f'@property')
         wr.writeln(f'def {field.json_name}(self) -> {type}:')
         wr.indent().writeln(f'return self._{field.json_name}').pop_indent()
         wr.writeln(f'@{field.json_name}.setter')
         wr.writeln(f'def {field.json_name}(self, value: {type}):')
-        wr.indent().writeln(f'self._{field.json_name} = value').pop_indent()
-        wr.writeln(f'')
-        
+        wr.indent()
+        oneof_fields = field.one_of_fields
+        if len(oneof_fields) > 0:
+            for oneof_jsonname in oneof_fields:
+                if oneof_jsonname == field.json_name:
+                    wr.writeln(f'self._{oneof_jsonname} = value')
+                else:
+                    wr.writeln(f'self._{oneof_jsonname} = None')
+        else:
+            wr.writeln(f'self._{field.json_name} = value')
+        wr.pop_indent()
+        wr.writeln('')
         pass

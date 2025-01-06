@@ -1,7 +1,7 @@
 from __future__ import annotations
 from enum import Enum
 from typing import Any, List, Optional, cast
-from google.protobuf.descriptor import FileDescriptor, Descriptor, FieldDescriptor, EnumDescriptor
+from google.protobuf.descriptor import FileDescriptor, Descriptor, FieldDescriptor, EnumDescriptor, OneofDescriptor
 
 class FieldType(Enum):
     cls = 'class'
@@ -62,6 +62,17 @@ class ModelFieldDescriptor():
     def is_repeated(self) -> bool:
         return self.descriptor.label == FieldDescriptor.LABEL_REPEATED
     
+    @property
+    def is_oneof(self) -> bool:
+        return self.descriptor.containing_oneof != None
+    
+    @property
+    def one_of_fields(self) -> List[str]:
+        oneof: OneofDescriptor = self.descriptor.containing_oneof
+        if self.is_oneof and len(oneof.fields) > 1:
+            return [f.json_name for f in oneof.fields]
+        return [];
+
     def __init__(self, doc: ModelGeneratorDoc, descriptor: FieldDescriptor):
         self.descriptor = descriptor
         self.doc = doc

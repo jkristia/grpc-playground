@@ -479,6 +479,7 @@ class ModelMsgWithOneOfProps(ModelBase):
 	@pointA.setter
 	def pointA(self, value: Optional[ModelSomePoint]):
 		self._pointA = value
+		self._pointB = None
 	
 	# property pointB
 	@property
@@ -486,6 +487,7 @@ class ModelMsgWithOneOfProps(ModelBase):
 		return self._pointB
 	@pointB.setter
 	def pointB(self, value: Optional[ModelSomePoint]):
+		self._pointA = None
 		self._pointB = value
 	
 	def __init__(self,
