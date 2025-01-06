@@ -22,6 +22,7 @@ class ClassWriter():
 		return wr
 	
 	def _write_class(self, wr: StringWriter):
+		wr.writeln(f'### message: {self._descriptor.descriptor.full_name}')
 		wr.writeln(f'class {self._descriptor.class_name}({self._doc.model_prefix}Base):')
 		pass
 	

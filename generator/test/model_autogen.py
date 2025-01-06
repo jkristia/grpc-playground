@@ -50,12 +50,14 @@ class ModelBase():
 		return MessageToDict(pb_msg, always_print_fields_with_no_presence=True)
 
 				   
+### enum: module_a.BasicEnum
 class ModelBasicEnum(Enum):
 	UNKNOWN = 'UNKNOWN'
 	VALUE_1 = 'VALUE_1'
 	ABC = 'ABC'
 	LOWER_CASE_VALUE = 'lower_case_value'
 
+### message: module_a.BasicSubItem
 class ModelBasicSubItem(ModelBase):
 	CLASS_NAME = 'ModelBasicSubItem'
 	
@@ -112,6 +114,7 @@ class ModelBasicSubItem(ModelBase):
 		return ModelBasicSubItem.from_dict(self.to_dict())
 	pass
 	
+### message: module_a.SomePoint
 class ModelSomePoint(ModelBase):
 	CLASS_NAME = 'ModelSomePoint'
 	
@@ -165,6 +168,7 @@ class ModelSomePoint(ModelBase):
 		return ModelSomePoint.from_dict(self.to_dict())
 	pass
 	
+### message: module_a.BasicMessageA
 class ModelBasicMessageA(ModelBase):
 	CLASS_NAME = 'ModelBasicMessageA'
 	
@@ -345,6 +349,7 @@ class ModelBasicMessageA(ModelBase):
 		return ModelBasicMessageA.from_dict(self.to_dict())
 	pass
 	
+### message: module_a.MsgWithRepeatedProps
 class ModelMsgWithRepeatedProps(ModelBase):
 	CLASS_NAME = 'ModelMsgWithRepeatedProps'
 	
@@ -428,6 +433,7 @@ class ModelMsgWithRepeatedProps(ModelBase):
 		return ModelMsgWithRepeatedProps.from_dict(self.to_dict())
 	pass
 	
+### message: module_a.MsgWithOneOfProps
 class ModelMsgWithOneOfProps(ModelBase):
 	CLASS_NAME = 'ModelMsgWithOneOfProps'
 	
@@ -501,6 +507,7 @@ class ModelMsgWithOneOfProps(ModelBase):
 		return ModelMsgWithOneOfProps.from_dict(self.to_dict())
 	pass
 	
+### message: module_b.BasicMessageB
 class ModelBasicMessageB(ModelBase):
 	CLASS_NAME = 'ModelBasicMessageB'
 	

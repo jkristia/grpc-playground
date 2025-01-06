@@ -11,6 +11,7 @@ class EnumWriter():
         pass
     
     def write(self, wr: StringWriter) -> StringWriter:
+        wr.writeln(f'### enum: {self._descriptor.descriptor.full_name}')
         wr.writeln(f'class {self._descriptor.class_name}(Enum):')
         wr.indent()
         for value in self._descriptor.values:

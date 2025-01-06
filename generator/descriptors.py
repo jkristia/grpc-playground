@@ -10,11 +10,30 @@ class FieldType(Enum):
     float = 'float'
     enum = 'enum'
     bool = 'bool'
+    bytes = 'Any'
 
 def map_field_type(field_type: int) -> FieldType | str:
+    if field_type == FieldDescriptor.TYPE_DOUBLE:
+        return FieldType.float
     if field_type == FieldDescriptor.TYPE_INT32:
         return FieldType.int
+    if field_type == FieldDescriptor.TYPE_UINT32:
+        return FieldType.int
     if field_type == FieldDescriptor.TYPE_INT64:
+        return FieldType.int
+    if field_type == FieldDescriptor.TYPE_UINT64:
+        return FieldType.int
+    if field_type == FieldDescriptor.TYPE_SINT32:
+        return FieldType.int
+    if field_type == FieldDescriptor.TYPE_SINT64:
+        return FieldType.int
+    if field_type == FieldDescriptor.TYPE_FIXED32:
+        return FieldType.int
+    if field_type == FieldDescriptor.TYPE_FIXED64:
+        return FieldType.int
+    if field_type == FieldDescriptor.TYPE_SFIXED32:
+        return FieldType.int
+    if field_type == FieldDescriptor.TYPE_SFIXED64:
         return FieldType.int
     if field_type == FieldDescriptor.TYPE_BOOL:
         return FieldType.bool
@@ -26,6 +45,10 @@ def map_field_type(field_type: int) -> FieldType | str:
         return FieldType.cls
     if field_type == FieldDescriptor.TYPE_ENUM:
         return FieldType.enum
+    
+    if field_type == FieldDescriptor.TYPE_BYTES:
+        return FieldType.bytes
+
     return f'unknown({field_type})'
 
 class ModelFieldDescriptor():
