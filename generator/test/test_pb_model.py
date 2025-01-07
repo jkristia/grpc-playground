@@ -211,8 +211,7 @@ class TestPb2Model(unittest.TestCase):
         assert isinstance(msg.listTimestamp[1], Google_Timestamp)
         assert msg.listTimestamp[1].time == '1971-04-12T11:00:10.000000654Z'
 
-        pb_msg_2 = module_a_pb2.MsgWithTimestamp()
-        ParseDict(msg.to_dict(), pb_msg_2)
+        pb_msg_2 = ParseDict(msg.to_dict(), module_a_pb2.MsgWithTimestamp())
         assert pb_msg_2.list_timestamp[0].ToJsonString() == '1970-04-29T02:10:40.000000456Z'
         assert pb_msg_2.list_timestamp[1].ToJsonString() == '1971-04-12T11:00:10.000000654Z'
 
