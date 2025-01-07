@@ -1,8 +1,10 @@
 ## pb2 to python class generator
-`generator/generator.py` generates 'plain' python classes from the protobuf generated classes. The generated pb2 classes has a lot of shortcomings, even with typings enabled.  
+`generator/generator.py` generates 'plain' python classes from the protobuf `pb2` generated classes.  
+The generated pb2 classes has a few shortcomings, which is why I felt the need for writing this generator.  
 
-The generated classes has python properties with typings, and support of 'oneof', no need to use pb.HasField('som hard coded field name').
-There are cases where the use of the field name is necessary, for this reason the generated class contains defined constants for all fields
+This generator will create typed properties and will create constans for all field names. There should not be any hard coded field name in the code, instead the generated constants should be used. To benefit from  this, linting must be enabled to show type errors.
+
+All properties are of `Optional[]` type, so rather than checking for `my_msg.HasField['foo_field']`, simply check for `my_msg.fooField is not None`
 
 To convert back and forth use 
 ```python
