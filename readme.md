@@ -8,17 +8,17 @@ All properties are of `Optional[]` type, so rather than checking for `my_msg.Has
 
 To convert back and forth use 
 ```python
-		# protobuf instance
-		pb_msg = module_a_pb2.MsgWithTimestamp(
-			list_timestamp=[
-				Timestamp(seconds=10203040, nanos=456),
-				Timestamp(seconds=40302010, nanos=654),
-			]
-		)
-		# convert pb message to py object
-		msg = ModuleA_MsgWithTimestamp.from_pb_msg(pb_msg)
-		# convert py obj to pb objectg
-		pb_msg_2 = ParseDict(msg.to_dict(), module_a_pb2.MsgWithTimestamp())
+	# protobuf instance
+	pb_msg = module_a_pb2.MsgWithTimestamp(
+		list_timestamp=[
+			Timestamp(seconds=10203040, nanos=456),
+			Timestamp(seconds=40302010, nanos=654),
+		]
+	)
+	# convert pb message to py object
+	msg = ModuleA_MsgWithTimestamp.from_pb_msg(pb_msg)
+	# convert py obj to pb objectg
+	pb_msg_2 = ParseDict(msg.to_dict(), module_a_pb2.MsgWithTimestamp())
 ```
 
 ## dev environment using docker 
