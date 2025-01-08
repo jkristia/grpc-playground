@@ -12,6 +12,13 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "db_play",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/server/db_play.py",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",

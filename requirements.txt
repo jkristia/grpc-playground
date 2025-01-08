@@ -4,4 +4,7 @@ grpcio-reflection==1.68.1
 protobuf
 mypy-protobuf
 pytest
+pg8000 # postgrsql
+sqlalchemy # postgresql
+
 
